@@ -31,5 +31,6 @@ deployedBytecode, with the USDC address written into its 6 immutable slots, equa
 runtime code byte for byte. (The raw artifact hash differs only because immutables are zero-filled
 in artifacts; see docs/07-DEPLOYMENT-RUNBOOK.md section 4.)
 
-Tooling note: Arc Foundry (arc-forge) has no install published that could be found; the deploy used
-standard Foundry 1.8.4 with the pinned solc 0.8.28. Runtime bytecode is identical either way.
+Tooling note: the deploy used standard Foundry 1.8.4 with the pinned solc 0.8.28, not Arc Foundry. Arc Foundry
+is published (https://docs.arc.io/arc/tutorials/install-arc-foundry.md); it was missed during the deploy, an
+oversight, not a tooling limitation. The identical runtime bytecode shows the deployed code is the same either way.

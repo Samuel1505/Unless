@@ -17,10 +17,10 @@ Amounts are one tenth of the original demo script (see docs/09-DEMO-SCRIPT.md). 
 | 2 | Create retainer 0 and deposit 1.00 USDC | Client | Client → contract 1.00 | [`0x21e2dd8d…2646`](https://explorer.arc.io/tx/0x21e2dd8d2aaec346726ec79b0338f39da7b2ed957652c3be7ec158c930d52646) |
 | 3 | File claim #0 for 0.30 USDC | Freelancer | — (0.30 reserved) | [`0xde5f4c35…d795`](https://explorer.arc.io/tx/0xde5f4c359c8000064c3f33fac0a16e2248acdad17f715fbaa1e60fb7d258d795) |
 | 4 | **Pay out claim #0 with no client action** | Freelancer | Contract → freelancer 0.30 | [`0x3080138c…49ca5`](https://explorer.arc.io/tx/0x3080138c62f1483ba7ccc702b977343621360fc47bdf0ef47f3b993fd5949ca5) |
-| 5 | File claim #1 for 0.20 USDC | Freelancer | — | [`0xba0b76fd…49e0`](https://explorer.arc.io/tx/0xba0b76fdf668a03012f50d326108669ddf3a27ffcf4816ac1097050cfc41efc9) |
+| 5 | File claim #1 for 0.20 USDC | Freelancer | — | [`0xba0b76fd…efc9`](https://explorer.arc.io/tx/0xba0b76fdf668a03012f50d326108669ddf3a27ffcf4816ac1097050cfc41efc9) |
 | 6 | Object to claim #1 | Client | — (0.20 unreserved) | [`0x09900884…15d2`](https://explorer.arc.io/tx/0x099008842fdb375735dfd4a7756977d712b33fa3bfbc3e67d773c1e5cff915d2) |
 | 7 | Request withdrawal of 0.70 USDC | Client | — | [`0x64d57c64…49bfb`](https://explorer.arc.io/tx/0x64d57c641dfcb2c2d0ee8cdb99aeb034b890c0b031ca8180e94d0abd1b049bfb) |
-| 8 | File claim #2 for 0.10 USDC during the notice | Freelancer | — | [`0x5c4e0c00…590d`](https://explorer.arc.io/tx/0x5c4e0c00cb3da73e268909841ab9c62f5b4f0cdc436e1c5a33e969f6bab9f90d) |
+| 8 | File claim #2 for 0.10 USDC during the notice | Freelancer | — | [`0x5c4e0c00…f90d`](https://explorer.arc.io/tx/0x5c4e0c00cb3da73e268909841ab9c62f5b4f0cdc436e1c5a33e969f6bab9f90d) |
 | 9 | Approve claim #2 now | Client | Contract → freelancer 0.10 | [`0x993c930f…cdc7`](https://explorer.arc.io/tx/0x993c930f521f1f5c51e853923e85792b4e3c8905f34dbb7eff4caa3de0d9cdc7) |
 | 10 | Complete withdrawal | Freelancer (anyone may) | Contract → client 0.60 | [`0xffa11f61…49e0`](https://explorer.arc.io/tx/0xffa11f61c04dcb13bbb560e1283b5d5a7e0c0edbbbe3fb5b6b214f67dffe49e0) |
 
