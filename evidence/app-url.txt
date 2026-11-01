@@ -1,0 +1,3 @@
+https://unless-nu.vercel.app/
+Hosted on Vercel from https://github.com/Samuel1505/Unless (main, c60a98e), VITE_NETWORK=mainnet.
+Verified 2026-11-01: bundle contains 0x766bBE6b3819261F7C1161073551A27362c96047 and chainId 5042; headers content-security-policy: frame-ancestors 'none' and x-frame-options: DENY.

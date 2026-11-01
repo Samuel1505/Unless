@@ -1,0 +1,81 @@
+{
+  "status": "completed",
+  "appId": "c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "threadId": "06b1ff4a-0db2-4cba-8360-b4fcc1ccf9c5",
+  "sandboxId": "i55fzip9pdkbuc2umpbkm",
+  "finalText": "Contract written. `contracts/UnlessRetainer.sol` now compiles with zero warnings, and the `forge build --force` output was clean. Full compiler output of the final build, with Solc 0.8.28 and the scaffold's files in `contracts/script` compiled alongside:\n\n```\nCompiling 29 files with Solc 0.8.28\nSolc 0.8.28 finished in 684.78ms\nCompiler run successful!\nEXIT=0\n```\n\nI checked the compiled interface against the spec. It has 13 state-changing functions, 5 views, and the public getters for `USDC`, `nextRetainerId`, `owed`, `totalOwed` and the six constants. It also has all 13 events and all 24 errors, declared inside the contract, with no `receive`, `fallback`, owner or payable function. The only extra ABI entry is `ReentrancyGuardReentrantCall`, which comes from the OpenZeppelin base contract.\n\n- **Real code:** only the constructor is implemented. It reverts `InvalidToken` on the zero address and sets the immutable `USDC`.\n- **Stubs:** every function body reverts. The first builds produced three kinds of warning:\n  - Unreachable-code warnings inside OpenZeppelin's `nonReentrant`.\n  - Unused return names.\n  - \"Can be restricted to pure\" on the views.\n- **How I fixed it:** each stub calls a private helper, `_stub()`, which reverts. Functions with return values declare an unnamed return and return a default. I kept the spec's parameter and return names as inline comments, so the ABI has no return names for now.\n- **`_stub()` cleanup:** `_stub()` is the one declaration beyond the spec. It is private, so it adds no ABI surface, and I delete it once every body exists. I'll restore the return names as I implement the views.\n- **Pragma:** the writer used `^0.8.20` instead of the spec's `^0.8.24`. I corrected it to `^0.8.24`.\n- **`foundry.toml`:** unchanged. It already pins `solc_version = \"0.8.28\"` with `auto_detect_solc = false`. There are no metadata settings, and no scaffold files were touched.\n- **README:** I added `README.md`, since the project had none. It records that this is still a contract skeleton.\n- **Checks:** lint and typecheck are clean. The dev server is running.\n\nI stopped here, as instructed. Next is P2 (mocks and test scaffold) when you are ready.\n\nWant to share this app? You can deploy it for free to **Netlify** or **Hugging Face** or **Vercel**. To get started, open the **Integrations** menu in the workbench header (or the **+** menu in the chat toolbar) and choose **Connect Netlify** or **Connect Hugging Face** or **Connect Vercel** to connect your account. Once connected, just say \"deploy this\" and I'll handle the rest.",
+  "todos": null,
+  "filesChanged": [
+    "README.md",
+    "contracts/UnlessRetainer.sol"
+  ],
+  "fileDiffs": [
+    {
+      "path": "contracts/UnlessRetainer.sol",
+      "action": "edit",
+      "addedLines": 214,
+      "removedLines": 1,
+      "isFragment": true,
+      "truncated": true,
+      "hunk": "+// SPDX-License-Identifier: MIT\n+pragma solidity ^0.8.20;\n+\n+import {ReentrancyGuard} from \"@openzeppelin/contracts/utils/ReentrancyGuard.sol\";\n+import {IERC20} from \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\n+import {SafeERC20} from \"@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol\";\n+\n+contract UnlessRetainer is ReentrancyGuard {\n+    using SafeERC20 for IERC20;\n+\n+    IERC20 public immutable USDC;\n+\n+    uint256 public constant MIN_WINDOW = 60;\n+    uint256 public constant MAX_WINDOW = 30 days;\n+    uint256 public constant MIN_NOTICE = 60;\n+    uint256 public constant MAX_NOTICE = 60 days;\n+    uint256 public constant MAX_PENDING_CLAIMS = 20;\n+    uint256 public constant MAX_TEXT_BYTES = 280;\n+\n+    enum ClaimStatus { None, Pending, Paid, Objected, Cancelled }\n+    enum PaidVia     { None, ApprovedNow, PaidOut }\n+\n+    struct Retainer {\n+        // slot 0\n+        address client;\n+        uint32  objectionWindow;   // seconds\n+        uint32  noticePeriod;      // seconds\n+        // slot 1\n+        address freelancer;\n+        uint64  endTime;           // unix seconds; claims allowed while block.timestamp < endTime\n+        // slot 2\n+        uint128 balance;           // USDC (6dp) held for this retainer\n+        uint128 reserved;          // sum of Pending claim amounts\n+        // slot 3\n+        uint128 withdrawalAmount;  // 0 = no pending withdrawal\n+        uint64  withdrawalReadyAt; // 0 = no pending withdrawal\n+        uint32  claimCount;        // total claims ever filed; next claimId = claimCount\n+        uint16  pendingClaims;     // number of Pending claims\n+        // slot 4\n+        uint128 totalDeposited;\n+        uint128 totalPaid;         // to freelancer\n+        // slot 5\n+        uint128 totalReturned;     // to client\n+        uint64  createdAt;\n+    }\n+\n+    struct Claim {\n+        uint128     amount;\n+        uint64      filedAt;\n+        uint64      payableAt;     // filedAt + objectionWindow\n+        ClaimStatus status;\n+        PaidVia     paidVia;\n+        bytes32     noteHash;      // keccak256(bytes(note)); full note is in the ClaimFiled event\n+    }\n+\n+    uint256 public nextRetainerId;                                   // starts at 0\n+    mapping(uint256 => Retainer) internal _retainers;\n+    mapping(uint256 => mapping(uint256 => Claim)) internal _claims;  // retainerId => claimId => Claim\n+    mapping(address => uint256[]) internal _clientRetainers;\n+    mapping(address => uint256[]) internal _freelancerRetainers;\n+    mapping(address => uint256) public owed;                         // credit-fallback ledger\n+    uint256 public totalOwed;\n+\n+    event RetainerCreated(uint256 indexed id, address indexed client, address indexed freelancer,\n+                          uint32 objectionWindow, uint32 noticePeriod, uint64 endTime);\n+    event Deposited(uint256 indexed id, address indexed from, uint128 amount, uint128 newBalance);\n+    event ClaimFiled(uint256 indexed id, uint256 indexed claimId, uint128 amount, uint64 payableAt, string note);\n+    event ClaimObjected(uint256 indexed id, uint256 indexed claimId, string reason);\n+    event ClaimCancelled(uint256 indexed id, uint256 indexed claimId);\n+    event ClaimPaid(uint256 indexed id, uint256 indexed claimId, address indexed to, uint128 amount, PaidVia via);\n+    event WithdrawalRequested(uint256 indexed id, uint128 amount, uint64 readyAt);\n+    event WithdrawalCancelled(uint256 indexed id);\n+    event WithdrawalCompleted(uint256 indexed id, uint128 requested, uint128 paid);\n+    event RemainderWithdrawn(uint256 indexed id, uint128 amount);\n+    event EndTimeExtended(uint256 indexed id, uint64 oldEndTime, uint64 newEndTime);\n+    event PayoutDeferred(address indexed to, uint256 amount);\n+    event OwedWithdrawn(address indexed to, uint256 amount);\n+\n+    error InvalidToken();\n+    error InvalidFreelancer();\n+    error WindowOutOfRange();\n+    error NoticeOutOfRange();\n+    error EndTimeTooSoon();\n+    error EndTimeNotLater();\n+    error RetainerNotFound();\n+    error ClaimNotFound();\n+    error NotClient();\n+    error NotFreelancer();\n+    error RetainerEnded();\n+    error RetainerNotEnded();\n+    error ZeroAmount();\n+    error TextTooLong();\n+    error TooManyPendingClaims();\n+    error InsufficientAvailable();\n+    error ClaimNotPending();\n+    error ObjectionWindowClosed();\n+    error ObjectionWindowOpen();\n+    error WithdrawalAlreadyPending();\n+    error NoWithdrawalPending();\n+    error NoticeNotElapsed();\n+    error NothingOwed();\n+    error DepositMismatch();\n+\n+    /// @notice Spec 2. Sets the immutable token.\n+    constructor(IERC20 usdc_) {\n+        if (address(usdc_) == address(0)) revert InvalidToken();\n+        USDC = usdc_;\n+    }\n+\n+    /// @notice Spec 6.1. Stub.\n+    function createRetainer(\n+        address /* freelancer */,\n+        uint32 /* objectionWindow */,\n+        uint32 /* noticePeriod */,\n+        uint64 /* endTime */,\n+        uint128 /* initialDeposit */\n+    ) external nonReentrant returns (uint256 id) {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.2. Stub.\n+    function deposit(uint256 /* id */, uint128 /* amount */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.5. Stub.\n+    function fileClaim(uint256 /* id */, uint128 /* amount */, string calldata /* note */)\n+        external nonReentrant returns (uint256 claimId)\n+    {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.6. Stub.\n+    function approveClaim(uint256 /* id */, uint256 /* claimId */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.7. Stub.\n+    function objectToClaim(uint256 /* id */, uint256 /* claimId */, string calldata /* reason */)\n+        external nonReentrant\n+    {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.8. Stub.\n+    function cancelClaim(uint256 /* id */, uint256 /* claimId */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.9. Stub.\n+    function payOutClaim(uint256 /* id */, uint256 /* claimId */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.11. Stub.\n+    function requestWithdrawal(uint256 /* id */, uint128 /* amount */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.12. Stub.\n+    function cancelWithdrawal(uint256 /* id */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.13. Stub.\n+    function completeWithdrawal(uint256 /* id */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.14. Stub.\n+    function withdrawRemainder(uint256 /* id */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.15. Stub.\n+    function extendEndTime(uint256 /* id */, uint64 /* newEndTime */) external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 6.16. Stub.\n+    function withdrawOwed() external nonReentrant {\n+        revert();\n+    }\n+\n+    /// @notice Spec 7. Stub.\n+    function getRetainer(uint256 /* id */)\n+        external view returns (Retainer memory r, uint256 available, bool ended)\n+    {\n+        revert();\n+    }\n+\n+    /// @notice Spec 7. Stub.\n+    function getClaim(uint256 /* id */, uint256 /* claimId */) external view returns (Claim memory) {\n+        revert();\n+    }\n+\n+    /// @notice Spec 7. Stub.\n+    function getClaims(uint256 /* id */, uint256 /* offset */, uint256 /* limit */)\n+        external view returns (Claim[] memory)\n+    {\n-pragma solidity ^0.8.20;\n+pragma solidity ^0.8.24;"
+    },
+    {
+      "path": "README.md",
+      "action": "write",
+      "addedLines": 30,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": false,
+      "hunk": "+# Unless\n+\n+A retainer for freelancers that pays by default. A client prefunds a USDC retainer for a named freelancer. The freelancer files claims for finished work, and each claim pays out automatically when its objection window ends, unless the client objects first.\n+\n+Built with [Arc Studio](https://studio.arc.io)\n+\n+Status: contract skeleton only. The app and the contract logic are still being built.\n+\n+## Tech stack\n+\n+- Solidity 0.8.28 and Foundry, with OpenZeppelin contracts\n+- Vite, React, TypeScript, Tailwind CSS\n+- wagmi and viem for wallet and chain access\n+- Arc, with USDC as the payment asset\n+\n+## Development\n+\n+Prerequisites: [Bun](https://bun.sh) and [Foundry](https://book.getfoundry.sh).\n+\n+```\n+bun install\n+bun run dev\n+bun run contracts:build\n+bun run contracts:test\n+bun run check\n+```\n+\n+### Environment variables\n+\n+None."
+    }
+  ],
+  "contextFiles": [],
+  "workspaceFiles": [],
+  "deployments": [],
+  "artifacts": {
+    "contractSources": [
+      "contracts/UnlessRetainer.sol",
+      "contracts/script/Create2Factory.sol",
+      "contracts/script/DeployCreate2.s.sol"
+    ],
+    "abis": [
+      "contracts/out/Base.sol/CommonBase.json",
+      "contracts/out/Base.sol/ScriptBase.json",
+      "contracts/out/Base.sol/TestBase.json",
+      "contracts/out/Create2.sol/Create2.json",
+      "contracts/out/Create2Factory.sol/Create2Factory.json",
+      "contracts/out/DeployCreate2.s.sol/DeployCreate2.json",
+      "contracts/out/Errors.sol/Errors.json",
+      "contracts/out/IERC1363.sol/IERC1363.json",
+      "contracts/out/IERC165.sol/IERC165.json",
+      "contracts/out/IERC20.sol/IERC20.json",
+      "contracts/out/IMulticall3.sol/IMulticall3.json",
+      "contracts/out/LowLevelCall.sol/LowLevelCall.json",
+      "contracts/out/ReentrancyGuard.sol/ReentrancyGuard.json",
+      "contracts/out/SafeERC20.sol/SafeERC20.json",
+      "contracts/out/Script.sol/Script.json",
+      "contracts/out/StdChains.sol/StdChains.json",
+      "contracts/out/StdCheats.sol/StdCheats.json",
+      "contracts/out/StdCheats.sol/StdCheatsSafe.json",
+      "contracts/out/StdConstants.sol/StdConstants.json",
+      "contracts/out/StdJson.sol/stdJson.json",
+      "contracts/out/StdMath.sol/stdMath.json",
+      "contracts/out/StdStorage.sol/stdStorage.json",
+      "contracts/out/StdStorage.sol/stdStorageSafe.json",
+      "contracts/out/StdStyle.sol/StdStyle.json",
+      "contracts/out/StdUtils.sol/StdUtils.json",
+      "contracts/out/StorageSlot.sol/StorageSlot.json",
+      "contracts/out/UnlessRetainer.sol/UnlessRetainer.json",
+      "contracts/out/Vm.sol/Vm.json",
+      "contracts/out/Vm.sol/VmSafe.json",
+      "contracts/out/console.sol/console.json",
+      "contracts/out/safeconsole.sol/safeconsole.json"
+    ],
+    "metadata": []
+  },
+  "webUrl": "https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "questions": null,
+  "errorMessage": null,
+  "traceId": "01a174b1-15aa-76da-a7a3-4e507bf44482",
+  "budget": null
+}

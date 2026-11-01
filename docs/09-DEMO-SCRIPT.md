@@ -11,13 +11,15 @@ Part A mirrors 03-CONTRACT-SPEC §14 exactly, and `test_workedExample_matchesSpe
 
 ## Part A — Mainnet transaction script
 
+> **Scaled 2026-11-01:** every amount is one tenth of the original script (10.00 → 1.00 USDC) because the builder had about 2 USDC on Arc mainnet. The contract has no minimum amount and the sequence and outcomes are unchanged: the freelancer receives 0.40, the client gets 0.60 back.
+
 ### A.1 Cast and wallets
 
 | Role | Wallet | Browser profile | Funding |
 |---|---|---|---|
-| Client | Wallet C | Profile 1 (label the window "Client") | 15 USDC |
-| Freelancer | Wallet F (ideally a real second person) | Profile 2 ("Freelancer") | 0.5 USDC (gas) |
-| Anyone | Wallet X (optional) | Profile 3 ("Anyone") | 0.5 USDC (gas) |
+| Client | Wallet C | Profile 1 (label the window "Client") | 1.50 USDC |
+| Freelancer | Wallet F (ideally a real second person) | Profile 2 ("Freelancer") | 0.05 USDC (gas) |
+| Anyone | Wallet X (optional) | Profile 3 ("Anyone") | 0.05 USDC (gas) |
 
 Using a real second person as freelancer makes row 4 stronger evidence: USDC lands in a wallet the builder does not control. If not possible, use a separate wallet and say so honestly.
 
@@ -26,7 +28,7 @@ Using a real second person as freelancer makes row 4 stronger evidence: USDC lan
 - [ ] App is on the public URL, network badge says **Arc mainnet**
 - [ ] `RETAINER_MAINNET` address in the app matches `deployments/arc-mainnet.json`
 - [ ] Each profile connected to the right wallet, on chain 5042
-- [ ] Wallet C USDC ≥ 11.5; F and X have gas
+- [ ] Wallet C USDC ≥ 1.20; F and X have gas
 - [ ] `evidence/mainnet-transactions.md` open for pasting hashes
 - [ ] Screen recorder running on all three profiles (capture raw footage now; edit later)
 - [ ] A clock visible on screen (system clock is fine; the app shows chain time)
@@ -36,7 +38,7 @@ Using a real second person as freelancer makes row 4 stronger evidence: USDC lan
 
 ```
 Freelancer:        <Wallet F address>
-Starting amount:   10.00 USDC
+Starting amount:   1.00 USDC
 Objection window:  5 minutes   (300 s)
 Withdrawal notice: 5 minutes   (300 s)
 End date:          7 days from now
@@ -48,23 +50,23 @@ Times are relative to the create transaction (t = 0). Each step: action, expecte
 
 | t | Profile | Action in app | Expect | Record |
 |---|---|---|---|---|
-| −0:30 | Client | Create retainer form → **Approve 10.00 USDC** | Wallet asks for exactly 10.00 USDC | Row 1 hash |
-| 0:00 | Client | **Create retainer** | Redirect to `/#/r/<id>`; Available 10.00 | Row 2 hash; retainer id |
-| 0:30 | Freelancer | Open `/#/r/<id>` → **File a claim** 3.00, note "Week 1: landing page" | Claim #0 pending, fuse burning, "Pays out in 4m 59s"; Available 7.00, Reserved 3.00 | Row 3 hash |
+| −0:30 | Client | Create retainer form → **Approve 1.00 USDC** | Wallet asks for exactly 1.00 USDC | Row 1 hash |
+| 0:00 | Client | **Create retainer** | Redirect to `/#/r/<id>`; Available 1.00 | Row 2 hash; retainer id |
+| 0:30 | Freelancer | Open `/#/r/<id>` → **File a claim** 0.30, note "Week 1: landing page" | Claim #0 pending, fuse burning, "Pays out in 4m 59s"; Available 0.70, Reserved 0.30 | Row 3 hash |
 | 0:30–5:30 | Client | **Do nothing.** Show the client view with Approve now / Object buttons visible and untouched | Fuse burns down | — |
-| 5:30 | Anyone (or Freelancer) | **Pay out 3.00 USDC** | Claim #0 "Paid out — no objection"; Wallet F USDC +3.00 | **Row 4 hash (featured)** |
-| 6:00 | Freelancer | **File a claim** 2.00, note "Extra revisions" | Claim #1 pending | Row 5 hash |
-| 6:40 | Client | **Object**, reason "Not agreed in scope" | Claim #1 "Client objected"; Available 7.00 | Row 6 hash |
-| 7:00 | Client | **Request withdrawal** 7.00 | Notice banner on both views: completes in 5:00 | Row 7 hash |
-| 7:30 | Freelancer | **File a claim** 1.00, note "Final handoff call" | Claim #2 pending; Available 6.00; banner still shows | Row 8 hash |
-| 7:40 | Client | **Approve now** on claim #2 | Claim #2 "Approved by client"; Wallet F +1.00 | Row 9 hash |
-| 12:00 | Anyone | **Complete withdrawal** | Client receives **6.00** (not 7.00); Available 0.00 | Row 10 hash |
+| 5:30 | Anyone (or Freelancer) | **Pay out 0.30 USDC** | Claim #0 "Paid out — no objection"; Wallet F USDC +0.30 | **Row 4 hash (featured)** |
+| 6:00 | Freelancer | **File a claim** 0.20, note "Extra revisions" | Claim #1 pending | Row 5 hash |
+| 6:40 | Client | **Object**, reason "Not agreed in scope" | Claim #1 "Client objected"; Available 0.70 | Row 6 hash |
+| 7:00 | Client | **Request withdrawal** 0.70 | Notice banner on both views: completes in 5:00 | Row 7 hash |
+| 7:30 | Freelancer | **File a claim** 0.10, note "Final handoff call" | Claim #2 pending; Available 0.60; banner still shows | Row 8 hash |
+| 7:40 | Client | **Approve now** on claim #2 | Claim #2 "Approved by client"; Wallet F +0.10 | Row 9 hash |
+| 12:00 | Anyone | **Complete withdrawal** | Client receives **0.60** (not 0.70); Available 0.00 | Row 10 hash |
 
 ### A.5 Post-run checks
 
-- [ ] Retainer page shows: Paid to date 4.00, Available 0.00, Reserved 0.00
-- [ ] Wallet F received exactly 4.00 USDC
-- [ ] Wallet C received exactly 6.00 USDC back
+- [ ] Retainer page shows: Paid to date 0.40, Available 0.00, Reserved 0.00
+- [ ] Wallet F received exactly 0.40 USDC
+- [ ] Wallet C received exactly 0.60 USDC back
 - [ ] Reconciliation line written under the evidence table
 - [ ] Every hash opens on explorer.arc.io
 - [ ] Optionally run `arc-cast call $RETAINER "getRetainer(uint256)" <id>` and save the output to evidence
@@ -93,9 +95,9 @@ If the run is spoiled, create a fresh retainer and redo it. Keep the spoiled one
 |---|---|---|---|
 | 0:00–0:15 | Problem | Home page headline | "Freelancers wait to be paid because every payment needs the client to say yes. Unless flips that: claims pay out unless the client objects." |
 | 0:15–0:45 | The moment | Client and freelancer windows side by side; fuse burning on claim #0; client's Approve/Object buttons untouched; cut to fuse complete; Anyone presses **Pay out**; Paid stamp | "The client funded ten dollars. The freelancer claimed three for finished work. The client did nothing. Five minutes later, anyone can pay it out — and the freelancer has the money." |
-| 0:45–1:00 | Proof | Explorer page for row 4: from contract to freelancer, 3 USDC | "That's a real transaction on Arc mainnet: USDC moving from the contract to the freelancer, with no approval from the client." |
+| 0:45–1:00 | Proof | Explorer page for row 4: from contract to freelancer, 0.30 USDC | "That's a real transaction on Arc mainnet: USDC moving from the contract to the freelancer, with no approval from the client." |
 | 1:00–1:25 | Client control | Claim #1 → Object with reason; then withdrawal request → notice banner; claim #2 during notice → Approve now | "The client stays in control. They can object, and the money goes back. To take money out, they give notice — and anything the freelancer claims before then still gets paid." |
-| 1:25–1:40 | Withdrawal completes | Complete withdrawal → client receives 6.00, not 7.00 | "The client asked for seven back. One dollar was owed for work, so they get six." |
+| 1:25–1:40 | Withdrawal completes | Complete withdrawal → client receives 0.60, not 0.70 | "The client asked for seven back. One dollar was owed for work, so they get six." |
 | 1:40–2:20 | Built in Arc Studio | Studio workspace: the contract prompt and generated contract; the test prompt; test run output scrolling with passes and invariant results; app preview in Studio on testnet; Studio's testnet deployment output | "I built all of it in Arc Studio: the contract from a written spec, a full unit and invariant test suite that Studio wrote and ran, and the app. Studio deployed it to testnet, where I ran every flow." |
 | 2:20–2:40 | Lineage | Terminal: arc-forge deploy to mainnet; `bytecode-match.txt` with two identical hashes | "Then I pushed from Studio to GitHub and deployed the same commit to mainnet with Arc Foundry. The bytecode on testnet and mainnet is identical." |
 | 2:40–2:55 | What's next | README "What's next" | "Next: an optional arbiter, recurring retainers, and team retainers." |

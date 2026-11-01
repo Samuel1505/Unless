@@ -1,0 +1,76 @@
+{
+  "status": "completed",
+  "appId": "c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "threadId": "06b1ff4a-0db2-4cba-8360-b4fcc1ccf9c5",
+  "sandboxId": "i55fzip9pdkbuc2umpbkm",
+  "finalText": "I read CLAUDE.md and all 11 docs and wrote no code. The full answer to all four items is in the report. I found 16 conflicts or ambiguities. Seven are money-relevant, and I need your ruling on items 1, 2 and 7 before I write the contract.\n\n- **Invariants:** the eight (I-1 to I-8) cover reservation bound, reservation exactness, solvency, conservation, destination safety, terminality, time ordering and immutable terms.\n- **Functions:** 13 state-changing external functions (all `nonReentrant`, none payable) plus 5 views. There is no `receive`, no `fallback` and no owner.\n- **Paths:** I keep this scaffold's layout, so tests go in `contracts/test/` and the deploy script in `contracts/script/`. OpenZeppelin comes from `node_modules` and solc is pinned at 0.8.28. I use plain `forge`, since `arc-forge` isn't installed here.\n- **Conflicts needing your decision:**\n  1. A nonexistent claim id would revert `ClaimNotPending`. I propose `ClaimNotFound` instead.\n  2. The check order in `deposit`, `requestWithdrawal` and `objectToClaim` contradicts spec section 12. I propose following each function's own list.\n  3. `foundry.toml` needs `bytecode_hash = \"none\"` and `cbor_metadata = false` now. Otherwise the testnet and mainnet bytecode match can break, and the runbook forbids changing `foundry.toml` after export.\n- **Smaller conflicts:** CLAUDE.md's Gate 0 says five invariants when the spec has eight. The test plan has no I-7 test, so I'll add one. The fee-on-transfer mock the `DepositMismatch` test needs isn't listed, so I'll add it. The frontend spec hand-writes chain and USDC facts that the scaffold already provides, so I'll import those instead.\n- **Mainnet:** I build and deploy on Arc testnet only. Before I write any mainnet config, I'll show you the required mainnet warning and wait for your confirmation. Mainnet deployment is yours to do outside Arc Studio.\n\nReply with your rulings on 1, 2 and 7 (or \"accept all proposals\") and I'll start the contract.\n\n<button data-quick-action=\"true\" data-type=\"file\" data-path=\"docs/P0-ORIENTATION.md\">Open the full report</button>",
+  "todos": null,
+  "filesChanged": [
+    "docs/P0-ORIENTATION.md"
+  ],
+  "fileDiffs": [
+    {
+      "path": "docs/P0-ORIENTATION.md",
+      "action": "write",
+      "addedLines": 83,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": false,
+      "hunk": "+# P0 Orientation: Unless\n+\n+Read in CLAUDE.md section 2 order. No code written yet.\n+\n+## 1. The eight invariants (docs/03 section 8), in my words\n+\n+- **I-1 Reservation bound.** In every retainer, money set aside for pending claims never exceeds the money held. `reserved <= balance`, so `available` can never go negative.\n+- **I-2 Reservation exactness.** `reserved` is exactly the sum of that retainer's Pending claim amounts, and `pendingClaims` is exactly their count. Incremental counters never drift from the claims.\n+- **I-3 Solvency.** The contract's real USDC balance is at least the sum of all retainer balances plus `totalOwed`. Equality holds unless someone sends USDC straight to the contract.\n+- **I-4 Conservation.** Per retainer, everything ever deposited is accounted for: `totalDeposited == balance + totalPaid + totalReturned`.\n+- **I-5 Destination safety.** USDC only ever leaves to that retainer's client, that retainer's freelancer, or an address pulling its own `owed` credit. Nobody else, including whoever pressed the button.\n+- **I-6 Terminality.** Paid, Objected and Cancelled claims never change state again.\n+- **I-7 Time ordering.** Every claim has `payableAt == filedAt + objectionWindow`, and was filed strictly before `endTime`.\n+- **I-8 Immutability of terms.** `client`, `freelancer`, `objectionWindow` and `noticePeriod` never change after creation. `endTime` only moves later.\n+\n+## 2. External functions I will implement (exactly these)\n+\n+State-changing, all `external nonReentrant`, none payable:\n+\n+1. `createRetainer(address,uint32,uint32,uint64,uint128) returns (uint256)`\n+2. `deposit(uint256,uint128)`\n+3. `fileClaim(uint256,uint128,string) returns (uint256)`\n+4. `approveClaim(uint256,uint256)`\n+5. `objectToClaim(uint256,uint256,string)`\n+6. `cancelClaim(uint256,uint256)`\n+7. `payOutClaim(uint256,uint256)`\n+8. `requestWithdrawal(uint256,uint128)`\n+9. `cancelWithdrawal(uint256)`\n+10. `completeWithdrawal(uint256)`\n+11. `withdrawRemainder(uint256)`\n+12. `extendEndTime(uint256,uint64)`\n+13. `withdrawOwed()`\n+\n+Views: `getRetainer(uint256)`, `getClaim(uint256,uint256)`, `getClaims(uint256,uint256,uint256)`, `retainersOfClient(address)`, `retainersOfFreelancer(address)`.\n+\n+Auto-generated public getters declared by the spec: `USDC`, `nextRetainerId`, `owed`, `totalOwed`, and the six constants (`MIN_WINDOW`, `MAX_WINDOW`, `MIN_NOTICE`, `MAX_NOTICE`, `MAX_PENDING_CLAIMS`, `MAX_TEXT_BYTES`).\n+\n+Internal only: deposit routine (6.3), `_send` (6.4), payout routine (6.10). No `receive`, no `fallback`, no owner, no extra surface. 13 events and 24 errors exactly as in sections 10 and 11, declared inside the contract so tests can use `UnlessRetainer.X.selector`.\n+\n+## 3. Planned file paths (adapted to this scaffold)\n+\n+This workspace's `foundry.toml` sets `src = contracts`, `test = contracts/test`, `script = contracts/script`, solc 0.8.28 (fits `^0.8.24`), cancun, optimizer 200 runs. OpenZeppelin 5.6.1 resolves from `node_modules` via `remappings.txt`. I keep those paths and treat CLAUDE.md section 4 as the mapping below.\n+\n+| CLAUDE.md path | Workspace path |\n+|---|---|\n+| `contracts/UnlessRetainer.sol` | same |\n+| `test/UnlessRetainer.t.sol` | `contracts/test/UnlessRetainer.t.sol` |\n+| `test/UnlessRetainer.invariant.t.sol` | `contracts/test/UnlessRetainer.invariant.t.sol` |\n+| `test/UnlessRetainer.fork.t.sol` | `contracts/test/UnlessRetainer.fork.t.sol` |\n+| `test/mocks/*` | `contracts/test/mocks/MockUSDC.sol`, `BlocklistUSDC.sol`, `FalseReturnUSDC.sol`, plus `FeeOnTransferUSDC.sol` (see conflict 6) |\n+| `script/Deploy.s.sol` | `contracts/script/Deploy.s.sol` (import becomes `../UnlessRetainer.sol`) |\n+| `src/config/chains.ts`, `contracts.ts` | `src/config/chains.ts`, `src/config/contracts.ts` (but see conflict 11) |\n+| `src/lib`, `hooks`, `components`, `routes` | same under `src/` |\n+| `deployments/`, `evidence/` | repo root, as written |\n+\n+Also: add an `[invariant]` block to `foundry.toml` (runs 256, depth 128, fail_on_revert false). Existing scaffold files `contracts/script/Create2Factory.sol` and `DeployCreate2.s.sol` stay untouched. Commands use plain `forge` (no `arc-forge` here).\n+\n+## 4. Conflicts and ambiguities\n+\n+**Blocking or money-relevant (I want your ruling before P1):**\n+\n+1. **Unknown claim id on state-changing calls.** Sections 6.6 to 6.9 say only \"claim status == Pending (`ClaimNotPending`)\". A nonexistent claim has status `None`, so it would revert `ClaimNotPending` (\"already resolved\"). `ClaimNotFound` is specified only for `getClaim`, and test 4.5 lists \"unknown claim\" without naming the error. Proposal: revert `ClaimNotFound` when `claimId >= claimCount` in a…\n+2. **Check ordering contradicts section 12 in three places.** Section 12 says existence, authorization, phase, arguments, state, balance. But `deposit` lists ZeroAmount before RetainerEnded; `requestWithdrawal` lists WithdrawalAlreadyPending before ZeroAmount; `objectToClaim` lists ObjectionWindowClosed before TextTooLong. Tests assert exact errors, so this matters. Proposal: follow each function'…\n+3. **Invariant count.** CLAUDE.md Gate 0 says \"five contract invariants\". Spec section 8, 04-TEST-PLAN and P0 all say eight. Treating eight as correct.\n+4. **I-7 has no test.** Spec says the suite encodes each invariant, but 04-TEST-PLAN section 3.2 lists I1 to I6, I8 and a ghost check, with no `invariant_I7_*`. I will add one.\n+5. **\"Zero warnings\" vs empty-body skeleton (P1).** Reverting stubs with named parameters trigger unused-parameter and mutability warnings. I will use unnamed parameters or minimal references in the skeleton to keep Gate 1 true.\n+6. **`DepositMismatch` needs a mock nobody listed.** 04-TEST-PLAN 4.3 requires a fee-on-transfer mock, but P2, section 2.1 and CLAUDE.md list only MockUSDC, BlocklistUSDC and FalseReturnUSDC. I will add `FeeOnTransferUSDC.sol` as a test double (stays under `contracts/test`).\n+7. **Bytecode-match fragility.** Runbook section 6 requires identical runtime bytecode on testnet and mainnet, but the compiler metadata hash embeds source paths and settings, and a re-export may change remappings. Proposal: add `bytecode_hash = \"none\"` and `cbor_metadata = false` to `foundry.toml` now, before the first deploy, since the runbook forbids changing it afterwards. This does not alter …\n+\n+**Lesser ambiguities (I will resolve as stated unless you object):**\n+\n+8. **Constant types.** Section 3 allows uint256 or smaller. I will use `uint256 public constant`.\n+9. **Zero-payout withdrawal edge.** `withdrawRemainder` reverts `ZeroAmount` when available is 0, so a client cannot use it to clear a pending withdrawal in that case. `completeWithdrawal` can still clear it. Left as specified.\n+10. **`TextTooLong` copy.** The limit is 280 bytes, but the error-map message says \"280 characters\". Multibyte text will hit it earlier. I will word the UI as \"280 bytes\" with the live byte counter.\n+11. **Frontend vs scaffold.**\n+    - The scaffold already has `src/config.ts` (wagmi) and generated `@/onchain-facts` and `@/onchain-money`. Docs 05 section 2 hand-write chain ids, RPC URLs, the USDC address and `parseUnits(..., 6)`. I will read chain and USDC facts from `@/onchain-facts` and amounts via `@/onchain-money` instead of retyping them. Their values match the docs (5042 / 5042002, `rpc.mainnet.arc.io` / `rpc.testnet.…\n+    - A `src/config/` folder next to `src/config.ts` is confusing for imports. Proposal: keep `src/config.ts` for wagmi and put the app's chain and contract settings in `src/config/chains.ts` and `src/config/contracts.ts` only if imports stay unambiguous; otherwise `src/app-config/`.\n+    - The wagmi config currently lists Arc testnet only (plus Ethereum for ENS). Mainnet support (VITE_NETWORK) needs it added.\n+12. **Vocabulary leaks.** Product doc bans \"contract\" in UI copy, yet 05 asks for a \"contract link\" and the error map says \"Contract misconfigured\". CLAUDE.md says reserved money is \"locked\", which the vocabulary table lists as a banned term. Fine in internal docs; I will use \"reserved\" and \"retainer\" in UI copy.\n+13. **Dates.** CLAUDE.md says the grant deadline is November 1, 2026. 01-PRODUCT section 7 says \"by Oct 30\", and 06 says verify funding \"before Oct 27\". Today is Oct 25, so the shortest deadline is the working one.\n+14. **Mainnet work.** The runbook has mainnet config (`VITE_NETWORK=mainnet`, mainnet RPC, mainnet deploy). Arc Studio is testnet-only: I will build and deploy on Arc testnet. Before I write any mainnet config or mainnet deploy step I must show you a required warning and get your confirmation first. Mainnet deploy and transactions happen outside Studio, by you.\n+15. **Receipts of unverified items.** Items marked NEEDS VERIFICATION in 06 that my work touches: explorer URL paths (`/tx`, `/address`), fork-test USDC funding cheats, and Arc-specific ERC-20 revert errors for the \"allowance/balance\" message. I will not rely on them: explorer links will use the `@/onchain-facts` helpers, and fork tests stay optional.\n+16. **CEI exception in `createRetainer`.** The spec itself notes the deposit routine updates `balance` after the `transferFrom`. That is a deliberate, documented exception to CLAUDE.md rule 8 (`nonReentrant` still applies). Implemented as specified."
+    }
+  ],
+  "contextFiles": [],
+  "workspaceFiles": [
+    "docs/01-PRODUCT.md",
+    "docs/02-ARCHITECTURE.md",
+    "docs/03-CONTRACT-SPEC.md",
+    "docs/04-TEST-PLAN.md",
+    "docs/05-FRONTEND-SPEC.md",
+    "docs/06-ARC-PLATFORM-NOTES.md",
+    "docs/07-DEPLOYMENT-RUNBOOK.md",
+    "docs/08-EVIDENCE-AND-SUBMISSION.md",
+    "docs/09-DEMO-SCRIPT.md",
+    "docs/10-DECISIONS.md",
+    "docs/11-STUDIO-PROMPTS.md",
+    "CLAUDE.md"
+  ],
+  "deployments": [],
+  "artifacts": {
+    "contractSources": [
+      "contracts/script/Create2Factory.sol",
+      "contracts/script/DeployCreate2.s.sol"
+    ],
+    "abis": [
+      "contracts/out/Base.sol/CommonBase.json",
+      "contracts/out/Base.sol/ScriptBase.json",
+      "contracts/out/Base.sol/TestBase.json",
+      "contracts/out/Create2.sol/Create2.json",
+      "contracts/out/Create2Factory.sol/Create2Factory.json",
+      "contracts/out/DeployCreate2.s.sol/DeployCreate2.json",
+      "contracts/out/Errors.sol/Errors.json",
+      "contracts/out/IMulticall3.sol/IMulticall3.json",
+      "contracts/out/LowLevelCall.sol/LowLevelCall.json",
+      "contracts/out/Script.sol/Script.json",
+      "contracts/out/StdChains.sol/StdChains.json",
+      "contracts/out/StdCheats.sol/StdCheats.json",
+      "contracts/out/StdCheats.sol/StdCheatsSafe.json",
+      "contracts/out/StdConstants.sol/StdConstants.json",
+      "contracts/out/StdJson.sol/stdJson.json",
+      "contracts/out/StdMath.sol/stdMath.json",
+      "contracts/out/StdStorage.sol/stdStorage.json",
+      "contracts/out/StdStorage.sol/stdStorageSafe.json",
+      "contracts/out/StdStyle.sol/StdStyle.json",
+      "contracts/out/StdUtils.sol/StdUtils.json",
+      "contracts/out/Vm.sol/Vm.json",
+      "contracts/out/Vm.sol/VmSafe.json",
+      "contracts/out/console.sol/console.json",
+      "contracts/out/safeconsole.sol/safeconsole.json"
+    ],
+    "metadata": []
+  },
+  "webUrl": "https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "questions": null,
+  "errorMessage": null,
+  "traceId": "01a174ac-c825-77de-acda-7e186b2558c6",
+  "budget": null
+}

@@ -1,0 +1,504 @@
+{
+  "status": "completed",
+  "appId": "c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "threadId": "06b1ff4a-0db2-4cba-8360-b4fcc1ccf9c5",
+  "sandboxId": "i55fzip9pdkbuc2umpbkm",
+  "finalText": "Warning: Transactions on mainnet involve real funds and, once submitted, are irreversible. Arc Studio may generate or edit code or configuration that references mainnet, but Arc Studio does not deploy to, transact on, sign for, fund, or otherwise interact with mainnet on your behalf. Any code used for mainnet must be independently reviewed, tested, validated, deployed, and operated by you outside of Arc Studio. You are solely responsible for any losses, errors, or other consequences resulting from your use of any code, configuration, or output generated or edited through Arc Studio in connection with mainnet. Before proceeding, you should first use testnet, obtain an independent professional audit, and carefully review all wallet addresses, contract addresses, chain settings, permissions, and other configuration details. Only continue to mainnet after you have completed your independent review and have determined that you want to proceed.\n\nI'll build the testnet foundation now and hold the mainnet config entries until you confirm you understand the warning above. The app foundation is in place on Arc testnet, and lint, typecheck and the production build all pass. I held back the mainnet config entries until you confirm you've read the mainnet warning at the top of this reply.\n\n**Checks**\n```\n$ bash scripts/check.sh\nFound 0 warnings and 0 errors.   (oxlint, type-aware: src + scripts)\nFound 0 warnings and 0 errors.   (oxlint: whole project)\n$ tsc --noEmit                   (no output: clean)\n\n$ bun run build\ncheck-errors: all 26 ABI errors have a message.\n$ tsc --noEmit\nvite v6.4.5 building for production...\n✓ 6425 modules transformed.\ndist/index.html                    0.96 kB\ndist/assets/index-k8qTiJLI.css    11.44 kB\n```\n- **Build warnings:** the only ones come from third-party wallet code in `node_modules` and a chunk-size notice. There are none from app code.\n- **Live-chain checks:** I ran a throwaway script against the deployed contract. `getRetainer(0)` came back as \"retainer not found\" and was mapped to its message. `createRetainer` with a zero freelancer decoded to the `InvalidFreelancer` message. `withdrawOwed` with nothing owed decoded to the `NothingOwed` message. The live fee estimate was 29 gwei, and a 1-wei estimate was raised to 20 gwei. I deleted the script afterwards.\n\n**Error map:** all 26 errors from the compiled ABI have a message, listed in the table below. Two are not in the 05 table: `ReentrancyGuardReentrantCall` and `SafeERC20FailedOperation`. Wording changes: `TextTooLong` now says \"bytes\" (P0 item 10), and `InvalidToken` no longer says \"contract\". I also added a message for \"not enough USDC for the network fee\". I tested the build gate by deleting one message: both `bun run build` and `tsc` fail.\n\n<button data-quick-action=\"true\" data-type=\"file\" data-path=\"docs/12-ERROR-MAP.md\">Open the full error map</button>\n\n**Final paths**\n- **App config:** `src/app-config/chains.ts`, `src/app-config/contracts.ts` and the generated `src/app-config/retainer-abi.generated.ts`. I used `app-config/` so it can't be confused with the existing `src/config.ts`.\n- **`src/config.ts`:** I changed one import, so the wagmi config uses our chain definition.\n- **Other code:** `src/lib/` (error messages, errors, fees, format, router), `src/hooks/`, `src/components/` and `src/routes/`.\n- **Scripts:** `scripts/sync-abi.ts` and `scripts/check-errors.ts`, plus `sync:abi`, `check:errors` and `build` entries in `package.json`.\n\n**How the spec items are covered**\n- **ABI source:** the ABI is generated from the compiled artifact of the deployed source by `bun run sync:abi`.\n- **Address source:** the address comes only from `contracts.ts`, read from `deployments/arc-testnet.json`, with an optional `VITE_RETAINER_TESTNET` override. A bad `VITE_NETWORK` or address shows a configuration error page.\n- **Writes:** every write goes through one hook that switches network, simulates first, applies the fee floor, signs and waits for the receipt. Approvals are for the exact amount and are skipped when the allowance already covers it.\n- **Network guard:** the badge is always visible. A banner offers a switch when the wallet is on another network. Switching uses wagmi, which does the same switch-then-add-chain sequence as 6.5.\n- **Design and routes:** the 5.2 tokens, dark mode and fonts are in. All four routes plus not-found render real states from chain reads. The retainer page shows balances, the withdrawal notice and a read-only claims list, but has no action buttons yet.\n\n**Not done:**\n- **`/new`:** it shows the funding wallet and its USDC balance, but not the terms form. That is the next prompt.\n- **Mainnet:** `VITE_NETWORK` accepts only testnet. Reply that you've read the warning, and I'll add the mainnet chain entry, selected by `VITE_NETWORK`, with no address filled in.\n- **`CLAUDE.md`:** unchanged.\n\nI did not modify `contracts/`, `foundry.toml`, `remappings.txt` or `deployments/`. I also updated `README.md` and `AGENTS.md`.",
+  "todos": [
+    {
+      "id": "todo:abi sync script + generated abi from artifact:0",
+      "text": "ABI sync script + generated ABI from artifact",
+      "status": "done"
+    },
+    {
+      "id": "todo:config modules (chains, contracts) + wagmi config:0",
+      "text": "Config modules (chains, contracts) + wagmi config",
+      "status": "done"
+    },
+    {
+      "id": "todo:lib: errors map, fees, format, router:0",
+      "text": "Lib: errors map, fees, format, router",
+      "status": "done"
+    },
+    {
+      "id": "todo:hooks: chain time, network guard, transaction, reads:0",
+      "text": "Hooks: chain time, network guard, transaction, reads",
+      "status": "done"
+    },
+    {
+      "id": "todo:design tokens, fonts, shell, shared components:0",
+      "text": "Design tokens, fonts, shell, shared components",
+      "status": "done"
+    },
+    {
+      "id": "todo:routes: home, new, retainer, my retainers, not found:0",
+      "text": "Routes: home, new, retainer, my retainers, not found",
+      "status": "done"
+    },
+    {
+      "id": "todo:build scripts, typecheck, lint, production build:0",
+      "text": "Build scripts, typecheck, lint, production build",
+      "status": "done"
+    },
+    {
+      "id": "todo:readme + agents notes, final report:0",
+      "text": "README + AGENTS notes, final report",
+      "status": "done"
+    }
+  ],
+  "filesChanged": [
+    "scripts/check-errors.ts",
+    "scripts/sync-abi.ts",
+    "src/App.tsx",
+    "src/app-config/chains.ts",
+    "src/app-config/contracts.ts",
+    "src/components/AddressChip.tsx",
+    "src/components/AppShell.tsx",
+    "src/components/ConfigErrorPage.tsx",
+    "src/components/ConnectButton.tsx",
+    "src/components/EmptyState.tsx",
+    "src/components/NetworkBadge.tsx",
+    "src/components/NetworkBanner.tsx",
+    "src/components/UsdcAmount.tsx",
+    "src/components/WalletGate.tsx",
+    "src/hooks/useChainTime.ts",
+    "src/hooks/useNetworkGuard.ts",
+    "src/hooks/useRetainer.ts",
+    "src/hooks/useTransaction.ts",
+    "src/index.css",
+    "src/lib/error-messages.ts",
+    "src/lib/errors.ts",
+    "src/lib/fees.ts",
+    "src/lib/format.ts",
+    "src/lib/router.tsx",
+    "src/routes/ClaimsList.tsx",
+    "src/routes/Home.tsx",
+    "src/routes/MyRetainers.tsx",
+    "src/routes/NewRetainer.tsx",
+    "src/routes/NotFound.tsx",
+    "src/routes/RetainerPage.tsx",
+    "tailwind.config.js"
+  ],
+  "fileDiffs": [
+    {
+      "path": "scripts/check-errors.ts",
+      "action": "write",
+      "addedLines": 61,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+/**\n+ * Fails (exit 1) when a custom error in the retainer ABI has no human message, when a message has no\n+ * error, or when the generated ABI no longer matches the compiled artifact. Runs before every\n+ * production build (`bun run build`).\n+ *\n+ *   bun run check:errors          check\n+ *   bun run check:errors --list   also print every error with its message\n+ */"
+    },
+    {
+      "path": "scripts/sync-abi.ts",
+      "action": "write",
+      "addedLines": 41,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+/**\n+ * Generates src/app-config/retainer-abi.generated.ts from the compiled artifact of the\n+ * deployed source (contracts/out/UnlessRetainer.sol/UnlessRetainer.json). The ABI is never\n+ * hand-written.\n+ *\n+ *   bun run sync:abi          write the file\n+ *   bun run sync:abi --check  exit 1 if the file differs from the artifact\n+ */"
+    },
+    {
+      "path": "src/app-config/chains.ts",
+      "action": "write",
+      "addedLines": 24,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { defineChain } from 'viem'\n+import { requireChainByScpBlockchain } from '@/onchain-facts'\n+\n+/**\n+ * Chain definitions for the app. Every value comes from @/onchain-facts (05-FRONTEND-SPEC 2.1).\n+ *\n+ * The native currency is USDC at 18 decimals. That is the gas unit only: it is never used for amounts.\n+ * Amounts are always the 6-decimal ERC-20 view (see src/lib/format.ts and @/onchain-money)."
+    },
+    {
+      "path": "src/app-config/contracts.ts",
+      "action": "write",
+      "addedLines": 93,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { getAddress, isAddress, type Address } from 'viem'\n+import { getUsdc } from '@/onchain-facts'\n+import deployment from '../../deployments/arc-testnet.json'\n+import { arcTestnet } from './chains'\n+import { retainerAbi } from './retainer-abi.generated'\n+\n+/**\n+ * Network and contract configuration (05-FRONTEND-SPEC 2.2)."
+    },
+    {
+      "path": "src/App.tsx",
+      "action": "write",
+      "addedLines": 27,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { CONFIG_ERROR } from '@/app-config/contracts'\n+import { AppShell } from '@/components/AppShell'\n+import { ConfigErrorPage } from '@/components/ConfigErrorPage'\n+import { useRoute } from '@/lib/router'\n+import { Home } from '@/routes/Home'\n+import { MyRetainers } from '@/routes/MyRetainers'\n+import { NewRetainer } from '@/routes/NewRetainer'\n+import { NotFound } from '@/routes/NotFound'"
+    },
+    {
+      "path": "src/components/AddressChip.tsx",
+      "action": "write",
+      "addedLines": 44,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useState } from 'react'\n+import { Check, Copy, ExternalLink } from 'lucide-react'\n+import { explorerAddressUrl, shortAddress } from '@/lib/format'\n+\n+/** 0x7C3a…9F22 with a copy button and an explorer link (05-FRONTEND-SPEC section 9). */\n+export function AddressChip({ address, label }: { address: string; label?: string }) {\n+  const [copied, setCopied] = useState(false)"
+    },
+    {
+      "path": "src/components/AppShell.tsx",
+      "action": "write",
+      "addedLines": 43,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import type { ReactNode } from 'react'\n+import { Link } from '@/lib/router'\n+import { ConnectButton } from './ConnectButton'\n+import { NetworkBadge } from './NetworkBadge'\n+import { NetworkBanner } from './NetworkBanner'\n+\n+export function AppShell({ children }: { children: ReactNode }) {\n+  return ("
+    },
+    {
+      "path": "src/components/ConfigErrorPage.tsx",
+      "action": "write",
+      "addedLines": 15,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+/** Rendered instead of the routes when the build cannot run, so a bad setting never shows a half-working app. */\n+export function ConfigErrorPage({ message }: { message: string }) {\n+  return (\n+    <main className=\"mx-auto flex min-h-dvh max-w-xl flex-col justify-center px-4 py-16\">\n+      <section className=\"panel perforated px-6 pb-6\">\n+        <h1 className=\"font-display text-step-2 font-bold\">This app isn't set up correctly</h1>\n+        <p className=\"mt-3\">{message}</p>\n+        <p className=\"mt-3 text-muted\">"
+    },
+    {
+      "path": "src/components/ConnectButton.tsx",
+      "action": "write",
+      "addedLines": 24,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { ConnectKitButton } from 'connectkit'\n+import { shortAddress } from '@/lib/format'\n+\n+export function ConnectButton({ primary = false }: { primary?: boolean }) {\n+  return (\n+    <ConnectKitButton.Custom>\n+      {({ isConnected, isConnecting, show, address, ensName }) => (\n+        <button"
+    },
+    {
+      "path": "src/components/EmptyState.tsx",
+      "action": "write",
+      "addedLines": 21,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import type { ReactNode } from 'react'\n+\n+/** A real empty state: says what is true right now and what the person can do about it. */\n+export function EmptyState({\n+  title,\n+  children,\n+  action,\n+}: {"
+    },
+    {
+      "path": "src/components/NetworkBadge.tsx",
+      "action": "write",
+      "addedLines": 15,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { NETWORK_LABEL } from '@/app-config/contracts'\n+\n+/** Always visible: the person must never be unsure which network they are on (05-FRONTEND-SPEC 2.2). */\n+export function NetworkBadge() {\n+  return (\n+    <span\n+      className=\"inline-flex items-center gap-2 border border-rule px-2.5 py-1 text-step--1 text-muted\"\n+      title={`This app is reading and writing on ${NETWORK_LABEL}`}"
+    },
+    {
+      "path": "src/components/NetworkBanner.tsx",
+      "action": "write",
+      "addedLines": 35,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { NETWORK_LABEL } from '@/app-config/contracts'\n+import { useNetworkGuard } from '@/hooks/useNetworkGuard'\n+\n+/**\n+ * Shown when a wallet is connected on another network. The region is a polite live region that\n+ * only changes when the state changes, so a screen reader hears it once.\n+ */\n+export function NetworkBanner() {"
+    },
+    {
+      "path": "src/components/NetworkBanner.tsx",
+      "action": "edit",
+      "addedLines": 4,
+      "removedLines": 1,
+      "isFragment": true,
+      "truncated": true,
+      "hunk": "-        <div className=\"border-b border-rule bg-objected/10\">\n+        <div\n+          className=\"border-b border-rule\"\n+          style={{ background: 'color-mix(in srgb, var(--objected) 10%, transparent)' }}\n+        >"
+    },
+    {
+      "path": "src/components/UsdcAmount.tsx",
+      "action": "write",
+      "addedLines": 11,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { formatUsdcFixed, formatUsdcFull, hasExtraPrecision } from '@/lib/format'\n+\n+/** \"3.00 USDC\", two decimals, tabular digits. Full precision is in the tooltip when there is more. */\n+export function UsdcAmount({ raw, className = '' }: { raw: bigint; className?: string }) {\n+  return (\n+    <span className={`num whitespace-nowrap ${className}`} title={hasExtraPrecision(raw) ? `${formatUsdcFull(raw)} USDC` : undefined}>\n+      {formatUsdcFixed(raw)} USDC\n+    </span>"
+    },
+    {
+      "path": "src/components/WalletGate.tsx",
+      "action": "write",
+      "addedLines": 39,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import type { ReactNode } from 'react'\n+import { NETWORK_LABEL } from '@/app-config/contracts'\n+import { useNetworkGuard } from '@/hooks/useNetworkGuard'\n+import { ConnectButton } from './ConnectButton'\n+import { EmptyState } from './EmptyState'\n+\n+/**\n+ * Renders `children` only when a wallet is connected on the expected network."
+    },
+    {
+      "path": "src/hooks/useChainTime.ts",
+      "action": "write",
+      "addedLines": 38,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useEffect, useState } from 'react'\n+import { useQuery } from '@tanstack/react-query'\n+import { usePublicClient } from 'wagmi'\n+import { CHAIN_ID } from '@/app-config/contracts'\n+\n+const REFETCH_MS = 10_000\n+\n+/**"
+    },
+    {
+      "path": "src/hooks/useNetworkGuard.ts",
+      "action": "write",
+      "addedLines": 35,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useCallback, useState } from 'react'\n+import { useAccount, useSwitchChain } from 'wagmi'\n+import { CHAIN_ID } from '@/app-config/contracts'\n+\n+/**\n+ * Network guard (05-FRONTEND-SPEC 6.5). `wrongNetwork` is true when a wallet is connected on another\n+ * chain. `switchNetwork` asks the wallet to switch; wagmi sends wallet_switchEthereumChain and, when the\n+ * wallet does not know the chain (error 4902), wallet_addEthereumChain with the chain from"
+    },
+    {
+      "path": "src/hooks/useRetainer.ts",
+      "action": "write",
+      "addedLines": 72,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useReadContract, useReadContracts } from 'wagmi'\n+import type { Address } from 'viem'\n+import { CHAIN_ID, retainerContract } from '@/app-config/contracts'\n+\n+/** State is read from view functions and polled; events are never needed to decide what is allowed (ADR-007). */\n+const POLL_MS = 4000\n+\n+export const CLAIM_STATUS = { None: 0, Pending: 1, Paid: 2, Objected: 3, Cancelled: 4 } as const"
+    },
+    {
+      "path": "src/hooks/useTransaction.ts",
+      "action": "write",
+      "addedLines": 135,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useCallback, useState } from 'react'\n+import { useQueryClient } from '@tanstack/react-query'\n+import { useAccount, usePublicClient, useSwitchChain, useWalletClient } from 'wagmi'\n+import { erc20Abi, type Abi, type Address, type Hash } from 'viem'\n+import { CHAIN_ID, USDC_ADDRESS, retainerContract } from '@/app-config/contracts'\n+import { describeError } from '@/lib/errors'\n+import { getFeeOverrides } from '@/lib/fees'"
+    },
+    {
+      "path": "src/index.css",
+      "action": "write",
+      "addedLines": 165,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+@tailwind base;\n+@tailwind components;\n+@tailwind utilities;\n+\n+/* Design tokens (docs/05-FRONTEND-SPEC 5.2). Light is the default, dark follows the system. */\n+:root {\n+  --paper: #f2f4f1;\n+  --ink: #1d2420;"
+    },
+    {
+      "path": "src/lib/error-messages.ts",
+      "action": "write",
+      "addedLines": 51,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import type { retainerAbi } from '../app-config/retainer-abi.generated'\n+\n+/**\n+ * One human message for every custom error in the compiled ABI (05-FRONTEND-SPEC section 7).\n+ *\n+ * The key set is derived from the ABI: `satisfies Record<RetainerErrorName, string>` makes the\n+ * type check fail when an error has no message (or a message has no error), and\n+ * scripts/check-errors.ts re-checks the same thing against the compiled artifact before"
+    },
+    {
+      "path": "src/lib/errors.ts",
+      "action": "write",
+      "addedLines": 59,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { BaseError, ContractFunctionRevertedError, toFunctionSelector } from 'viem'\n+import { ERROR_MESSAGES, GENERIC_MESSAGES, type RetainerErrorName } from './error-messages'\n+\n+export type DescribedError =\n+  | { kind: 'rejected'; message: string }\n+  | { kind: 'retainer'; name: RetainerErrorName; message: string }\n+  | { kind: 'token' | 'fee' | 'unknown'; message: string }"
+    },
+    {
+      "path": "src/lib/fees.ts",
+      "action": "write",
+      "addedLines": 28,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { parseGwei } from 'viem'\n+\n+/**\n+ * Arc's mempool silently drops a transaction whose maxFeePerGas is below 20 gwei, so every\n+ * write the app sends carries a fee at or above this floor (05-FRONTEND-SPEC 6.3, CLAUDE.md rule 11).\n+ */\n+export const MIN_FEE_PER_GAS = parseGwei('20')"
+    },
+    {
+      "path": "src/lib/format.ts",
+      "action": "write",
+      "addedLines": 83,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { buildAddressExplorerUrl, buildTxExplorerUrl } from '@/onchain-facts'\n+import { Amount, AmountError, parseAmount, usdcDecimalsFor } from '@/onchain-money'\n+import { CHAIN_ID } from '@/app-config/contracts'\n+\n+/** Wraps a raw ERC-20 USDC amount (6 dp view) with its decimal count from the facts module. */\n+export function toUsdc(raw: bigint): Amount {\n+  return Amount.fromRaw(raw, usdcDecimalsFor(CHAIN_ID))\n+}"
+    },
+    {
+      "path": "src/lib/router.tsx",
+      "action": "write",
+      "addedLines": 53,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useMemo, useSyncExternalStore, type AnchorHTMLAttributes, type ReactNode } from 'react'\n+\n+/** Hash routing (/#/…) so any static host works without rewrite rules (05-FRONTEND-SPEC section 3). */\n+export type Route =\n+  | { name: 'home' }\n+  | { name: 'new' }\n+  | { name: 'retainer'; id: bigint }\n+  | { name: 'me' }"
+    },
+    {
+      "path": "src/routes/ClaimsList.tsx",
+      "action": "write",
+      "addedLines": 83,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { CLAIM_STATUS, PAID_VIA, useClaims } from '@/hooks/useRetainer'\n+import { useChainTime } from '@/hooks/useChainTime'\n+import { EmptyState } from '@/components/EmptyState'\n+import { UsdcAmount } from '@/components/UsdcAmount'\n+import { formatCountdown } from '@/lib/format'\n+\n+export type Role = 'client' | 'freelancer' | 'visitor'"
+    },
+    {
+      "path": "src/routes/Home.tsx",
+      "action": "write",
+      "addedLines": 66,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useState, type FormEvent } from 'react'\n+import { NETWORK_LABEL, RETAINER_ADDRESS } from '@/app-config/contracts'\n+import { AddressChip } from '@/components/AddressChip'\n+import { Link, navigate } from '@/lib/router'\n+\n+export function Home() {\n+  const [number, setNumber] = useState('')\n+  const trimmed = number.trim()"
+    },
+    {
+      "path": "src/routes/MyRetainers.tsx",
+      "action": "write",
+      "addedLines": 120,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useAccount } from 'wagmi'\n+import { EmptyState } from '@/components/EmptyState'\n+import { UsdcAmount } from '@/components/UsdcAmount'\n+import { WalletGate } from '@/components/WalletGate'\n+import { useMyRetainerIds, useRetainerSummaries } from '@/hooks/useRetainer'\n+import { shortAddress } from '@/lib/format'\n+import { Link } from '@/lib/router'"
+    },
+    {
+      "path": "src/routes/NewRetainer.tsx",
+      "action": "write",
+      "addedLines": 69,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useAccount, useReadContract } from 'wagmi'\n+import { erc20Abi } from 'viem'\n+import { CHAIN_ID, NETWORK_LABEL, USDC_ADDRESS } from '@/app-config/contracts'\n+import { AddressChip } from '@/components/AddressChip'\n+import { UsdcAmount } from '@/components/UsdcAmount'\n+import { WalletGate } from '@/components/WalletGate'\n+\n+export function NewRetainer() {"
+    },
+    {
+      "path": "src/routes/NotFound.tsx",
+      "action": "write",
+      "addedLines": 18,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { EmptyState } from '@/components/EmptyState'\n+import { Link } from '@/lib/router'\n+\n+export function NotFound() {\n+  return (\n+    <EmptyState\n+      title=\"That page doesn't exist\"\n+      action={"
+    },
+    {
+      "path": "src/routes/RetainerPage.tsx",
+      "action": "write",
+      "addedLines": 134,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+import { useAccount } from 'wagmi'\n+import { NETWORK_LABEL, RETAINER_ADDRESS } from '@/app-config/contracts'\n+import { AddressChip } from '@/components/AddressChip'\n+import { EmptyState } from '@/components/EmptyState'\n+import { UsdcAmount } from '@/components/UsdcAmount'\n+import { useChainTime } from '@/hooks/useChainTime'\n+import { useRetainer } from '@/hooks/useRetainer'\n+import { isRetainerNotFound } from '@/lib/errors'"
+    },
+    {
+      "path": "tailwind.config.js",
+      "action": "write",
+      "addedLines": 38,
+      "removedLines": 0,
+      "isFragment": false,
+      "truncated": true,
+      "hunk": "+/** @type {import('tailwindcss').Config} */\n+export default {\n+  content: [\n+    './index.html',\n+    './src/**/*.{js,ts,jsx,tsx}',\n+  ],\n+  theme: {\n+    extend: {"
+    }
+  ],
+  "contextFiles": [],
+  "workspaceFiles": [],
+  "deployments": [
+    {
+      "contract": "UnlessRetainer",
+      "address": "0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+      "network": "Arc Testnet",
+      "explorerUrl": "https://explorer.testnet.arc.io/address/0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+      "txHash": "0x5a421959e9218941d67139ca7e3caff8fa9d2d8b41d95f581b26699143ca8c7e",
+      "deployedAt": "2026-10-25T21:12:58.279Z"
+    }
+  ],
+  "artifacts": {
+    "contractSources": [
+      "contracts/UnlessRetainer.sol",
+      "contracts/script/Create2Factory.sol",
+      "contracts/script/Deploy.s.sol",
+      "contracts/script/DeployCreate2.s.sol",
+      "contracts/test/UnlessRetainer.Approve.t.sol",
+      "contracts/test/UnlessRetainer.Base.t.sol",
+      "contracts/test/UnlessRetainer.Deposit.t.sol",
+      "contracts/test/UnlessRetainer.ExtBase.t.sol",
+      "contracts/test/UnlessRetainer.Extend.t.sol",
+      "contracts/test/UnlessRetainer.Fallback.t.sol",
+      "contracts/test/UnlessRetainer.FileClaim.t.sol",
+      "contracts/test/UnlessRetainer.Isolation.t.sol",
+      "contracts/test/UnlessRetainer.Object.t.sol",
+      "contracts/test/UnlessRetainer.Owed.t.sol",
+      "contracts/test/UnlessRetainer.PayOut.t.sol",
+      "contracts/test/UnlessRetainer.Properties.t.sol",
+      "contracts/test/UnlessRetainer.Remainder.t.sol",
+      "contracts/test/UnlessRetainer.Views.t.sol",
+      "contracts/test/UnlessRetainer.WindowFuzz.t.sol",
+      "contracts/test/UnlessRetainer.WithdrawalCancel.t.sol",
+      "contracts/test/UnlessRetainer.WithdrawalComplete.t.sol",
+      "contracts/test/UnlessRetainer.WithdrawalFuzz.t.sol",
+      "contracts/test/UnlessRetainer.WithdrawalRequest.t.sol",
+      "contracts/test/UnlessRetainer.WorkedExample.t.sol",
+      "contracts/test/UnlessRetainer.invariant.t.sol",
+      "contracts/test/UnlessRetainer.t.sol",
+      "contracts/test/harness/UnlessRetainerHarness.sol",
+      "contracts/test/mocks/BlocklistUSDC.sol",
+      "contracts/test/mocks/FalseReturnUSDC.sol",
+      "contracts/test/mocks/FeeOnTransferUSDC.sol",
+      "contracts/test/mocks/MockUSDC.sol"
+    ],
+    "abis": [
+      "contracts/out/Base.sol/CommonBase.json",
+      "contracts/out/Base.sol/ScriptBase.json",
+      "contracts/out/Base.sol/TestBase.json",
+      "contracts/out/BlocklistUSDC.sol/BlocklistUSDC.json",
+      "contracts/out/Context.sol/Context.json",
+      "contracts/out/Create2.sol/Create2.json",
+      "contracts/out/Create2Factory.sol/Create2Factory.json",
+      "contracts/out/DeployCreate2.s.sol/DeployCreate2.json",
+      "contracts/out/ERC20.sol/ERC20.json",
+      "contracts/out/Errors.sol/Errors.json",
+      "contracts/out/FalseReturnUSDC.sol/FalseReturnUSDC.json",
+      "contracts/out/FeeOnTransferUSDC.sol/FeeOnTransferUSDC.json",
+      "contracts/out/IERC1363.sol/IERC1363.json",
+      "contracts/out/IERC165.sol/IERC165.json",
+      "contracts/out/IERC20.sol/IERC20.json",
+      "contracts/out/IERC20Metadata.sol/IERC20Metadata.json",
+      "contracts/out/IMulticall3.sol/IMulticall3.json",
+      "contracts/out/LowLevelCall.sol/LowLevelCall.json",
+      "contracts/out/MockUSDC.sol/MockUSDC.json",
+      "contracts/out/ReentrancyGuard.sol/ReentrancyGuard.json",
+      "contracts/out/SafeCast.sol/SafeCast.json",
+      "contracts/out/SafeERC20.sol/SafeERC20.json",
+      "contracts/out/Script.sol/Script.json",
+      "contracts/out/StdAssertions.sol/StdAssertions.json",
+      "contracts/out/StdChains.sol/StdChains.json",
+      "contracts/out/StdCheats.sol/StdCheats.json",
+      "contracts/out/StdCheats.sol/StdCheatsSafe.json",
+      "contracts/out/StdConstants.sol/StdConstants.json",
+      "contracts/out/StdError.sol/stdError.json",
+      "contracts/out/StdInvariant.sol/StdInvariant.json",
+      "contracts/out/StdJson.sol/stdJson.json",
+      "contracts/out/StdMath.sol/stdMath.json",
+      "contracts/out/StdStorage.sol/stdStorage.json",
+      "contracts/out/StdStorage.sol/stdStorageSafe.json",
+      "contracts/out/StdStyle.sol/StdStyle.json",
+      "contracts/out/StdToml.sol/stdToml.json",
+      "contracts/out/StdUtils.sol/StdUtils.json",
+      "contracts/out/StorageSlot.sol/StorageSlot.json",
+      "contracts/out/Test.sol/Test.json",
+      "contracts/out/UnlessRetainer.Approve.t.sol/UnlessRetainerApproveTest.json",
+      "contracts/out/UnlessRetainer.Base.t.sol/UnlessRetainerBase.json",
+      "contracts/out/UnlessRetainer.Deposit.t.sol/UnlessRetainerDepositTest.json",
+      "contracts/out/UnlessRetainer.ExtBase.t.sol/UnlessRetainerExtBase.json",
+      "contracts/out/UnlessRetainer.Extend.t.sol/UnlessRetainerExtendTest.json",
+      "contracts/out/UnlessRetainer.Fallback.t.sol/UnlessRetainerBlocklistFallbackTest.json",
+      "contracts/out/UnlessRetainer.Fallback.t.sol/UnlessRetainerFallbackScenarios.json",
+      "contracts/out/UnlessRetainer.Fallback.t.sol/UnlessRetainerFalseReturnFallbackTest.json",
+      "contracts/out/UnlessRetainer.FileClaim.t.sol/UnlessRetainerFileClaimTest.json",
+      "contracts/out/UnlessRetainer.Isolation.t.sol/UnlessRetainerIsolationTest.json",
+      "contracts/out/UnlessRetainer.Object.t.sol/UnlessRetainerObjectTest.json",
+      "contracts/out/UnlessRetainer.Owed.t.sol/UnlessRetainerOwedBlocklistTest.json",
+      "contracts/out/UnlessRetainer.Owed.t.sol/UnlessRetainerOwedFalseReturnTest.json",
+      "contracts/out/UnlessRetainer.Owed.t.sol/UnlessRetainerOwedScenarios.json",
+      "contracts/out/UnlessRetainer.PayOut.t.sol/UnlessRetainerPayOutTest.json",
+      "contracts/out/UnlessRetainer.Properties.t.sol/UnlessRetainerPropertiesTest.json",
+      "contracts/out/UnlessRetainer.Remainder.t.sol/UnlessRetainerRemainderTest.json",
+      "contracts/out/UnlessRetainer.Views.t.sol/UnlessRetainerViewsTest.json",
+      "contracts/out/UnlessRetainer.WindowFuzz.t.sol/UnlessRetainerWindowFuzzTest.json",
+      "contracts/out/UnlessRetainer.WithdrawalCancel.t.sol/UnlessRetainerCancelWithdrawalTest.json",
+      "contracts/out/UnlessRetainer.WithdrawalComplete.t.sol/UnlessRetainerCompleteWithdrawalTest.json",
+      "contracts/out/UnlessRetainer.WithdrawalFuzz.t.sol/UnlessRetainerWithdrawalFuzzTest.json",
+      "contracts/out/UnlessRetainer.WithdrawalRequest.t.sol/UnlessRetainerRequestWithdrawalTest.json",
+      "contracts/out/UnlessRetainer.WorkedExample.t.sol/UnlessRetainerWorkedExampleTest.json",
+      "contracts/out/UnlessRetainer.invariant.t.sol/UnlessHandler.json",
+      "contracts/out/UnlessRetainer.invariant.t.sol/UnlessRetainerInvariantTest.json",
+      "contracts/out/UnlessRetainer.sol/UnlessRetainer.json",
+      "contracts/out/UnlessRetainer.t.sol/UnlessRetainerTest.json",
+      "contracts/out/UnlessRetainerHarness.sol/UnlessRetainerHarness.json",
+      "contracts/out/Vm.sol/Vm.json",
+      "contracts/out/Vm.sol/VmSafe.json",
+      "contracts/out/console.sol/console.json",
+      "contracts/out/draft-IERC6093.sol/IERC1155Errors.json",
+      "contracts/out/draft-IERC6093.sol/IERC20Errors.json",
+      "contracts/out/draft-IERC6093.sol/IERC721Errors.json",
+      "contracts/out/safeconsole.sol/safeconsole.json"
+    ],
+    "metadata": [
+      "contracts/contract-metadata/UnlessRetainer.json"
+    ]
+  },
+  "webUrl": "https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "questions": null,
+  "errorMessage": null,
+  "traceId": null,
+  "budget": null
+}
