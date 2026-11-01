@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useAccount } from 'wagmi'
-import { NETWORK_LABEL } from '@/app-config/contracts'
+import { IS_TESTNET, NETWORK_LABEL } from '@/app-config/contracts'
 import { CreateActions } from '@/components/CreateActions'
 import { DurationField } from '@/components/DurationField'
 import { FormField, describedBy } from '@/components/FormField'
@@ -143,10 +143,15 @@ export function CreateRetainerForm() {
         />
         {balance.data === 0n && (
           <p className="mt-2 text-step--1">
-            You have no USDC on {NETWORK_LABEL}.{' '}
-            <a href="https://faucet.circle.com" target="_blank" rel="noopener noreferrer">
-              Get test USDC
-            </a>
+            You have no USDC on {NETWORK_LABEL}.
+            {IS_TESTNET && (
+              <>
+                {' '}
+                <a href="https://faucet.circle.com" target="_blank" rel="noopener noreferrer">
+                  Get test USDC
+                </a>
+              </>
+            )}
           </p>
         )}
       </FormField>

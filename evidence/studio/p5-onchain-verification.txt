@@ -1,0 +1,23 @@
+Independent verification of the Arc testnet deployment (run locally, not by Studio)
+Date: 2026-10-25
+RPC: https://rpc.testnet.arc.io   (eth_chainId = 0x4cef52 = 5042002)
+Tools: cast (Foundry), curl, python3
+
+Contract:  0x54414913081adb0d95b0f5aedc6a4c8a8d85c821
+Deploy tx: 0x5a421959e9218941d67139ca7e3caff8fa9d2d8b41d95f581b26699143ca8c7e
+  receipt status 0x1, block 69092835
+  tx.from 0xf4b441cab8748b8e981ee2e498f8ce5c2f1ba066 (bundler), tx.to 0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789 (ERC-4337 EntryPoint)
+  Studio's deployer wallet is a smart account; the contract has no owner, so the deployer has no rights.
+
+Read-back:
+  USDC()            -> 0x3600000000000000000000000000000000000000
+
+Runtime code:
+  on-chain size                      11496 bytes
+  keccak(cast code <addr>)           0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79
+  Studio artifact deployedBytecode, with USDC written into its 6 immutableReferences slots:
+                                     0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79
+  Byte-for-byte equal: true
+
+For Gate 5: compare keccak(cast code) on testnet with keccak(cast code) on mainnet. The constructor
+argument is the same on both networks, so the hashes must be identical.

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { NETWORK_LABEL, RETAINER_ADDRESS } from '@/app-config/contracts'
+import { IS_TESTNET, NETWORK_LABEL, RETAINER_ADDRESS } from '@/app-config/contracts'
 import { AddressChip } from '@/components/AddressChip'
 import { Link, navigate } from '@/lib/router'
 
@@ -89,7 +89,9 @@ export function Home() {
           )}
         </form>
         <p className="mt-6 text-step--1 text-muted">
-          This build runs on {NETWORK_LABEL}. Testnet USDC has no value.
+          {IS_TESTNET
+            ? `This build runs on ${NETWORK_LABEL}. Testnet USDC has no value.`
+            : `This build runs on ${NETWORK_LABEL} and uses real USDC. What you send can't be taken back by anyone but the rules. The code that holds the money is immutable and has no administrator.`}
         </p>
         {RETAINER_ADDRESS && (
           <p className="mt-3 flex flex-wrap items-center gap-x-2 text-step--1 text-muted">

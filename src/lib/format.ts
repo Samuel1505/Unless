@@ -1,11 +1,8 @@
-import { buildAddressExplorerUrl, buildTxExplorerUrl } from '@/onchain-facts'
-import { Amount, AmountError, parseAmount, usdcDecimalsFor } from '@/onchain-money'
-import { CHAIN_ID } from '@/app-config/contracts'
+import { ACTIVE_FACTS } from '@/app-config/contracts'
+import { AmountError, formatUnitsExact, formatUnitsFixed, parseUnitsExact } from '@/lib/money'
 
-/** Wraps a raw ERC-20 USDC amount (6 dp view) with its decimal count from the facts module. */
-export function toUsdc(raw: bigint): Amount {
-  return Amount.fromRaw(raw, usdcDecimalsFor(CHAIN_ID))
-}
+/** USDC as people use it: the 6-decimal ERC-20 view. Never the 18-decimal native gas view. */
+const USDC_DECIMALS = ACTIVE_FACTS.usdc.decimals
 
 /** "1,284.50": thousands separators on the whole part only, for reading; never fed back into a parser. */
 function groupThousands(decimal: string): string {
@@ -16,16 +13,16 @@ function groupThousands(decimal: string): string {
 
 /** "3.00": exactly two decimals, never rounded up, with thousands separators. */
 export function formatUsdcFixed(raw: bigint): string {
-  return groupThousands(toUsdc(raw).toFixed(2))
+  return groupThousands(formatUnitsFixed(raw, USDC_DECIMALS, 2))
 }
 
 /** Full precision, used for the tooltip when the value has more than two decimals. */
 export function formatUsdcFull(raw: bigint): string {
-  return toUsdc(raw).toString()
+  return formatUnitsExact(raw, USDC_DECIMALS)
 }
 
 export function hasExtraPrecision(raw: bigint): boolean {
-  const extraDigits = usdcDecimalsFor(CHAIN_ID) - 2
+  const extraDigits = USDC_DECIMALS - 2
   return raw % 10n ** BigInt(extraDigits) !== 0n
 }
 
@@ -44,8 +41,8 @@ export function parseUsdcInput(text: string): ParsedUsdcInput {
   const trimmed = text.trim()
   if (trimmed === '') return { ok: false, reason: 'empty' }
   try {
-    return { ok: true, raw: parseAmount(CHAIN_ID, trimmed).raw }
-  } catch (error) {
+    return { ok: true, raw: parseUnitsExact(trimmed, USDC_DECIMALS) }
+  } catch (error: unknown) {
     if (error instanceof AmountError && error.code === 'TOO_MANY_FRACTION_DIGITS') {
       return { ok: false, reason: 'too-precise' }
     }
@@ -59,11 +56,11 @@ export function shortAddress(address: string): string {
 }
 
 export function explorerAddressUrl(address: string): string {
-  return buildAddressExplorerUrl(CHAIN_ID, address)
+  return `${ACTIVE_FACTS.explorerBase}/address/${address}`
 }
 
 export function explorerTxUrl(hash: string): string {
-  return buildTxExplorerUrl(CHAIN_ID, hash)
+  return `${ACTIVE_FACTS.explorerBase}/tx/${hash}`
 }
 
 /** "4m 08s", "1h 02m", "2d 4h". Rounds down; 0 or less reads "0s". */

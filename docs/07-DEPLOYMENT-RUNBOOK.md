@@ -70,6 +70,8 @@ Why Arc Foundry and not stock Foundry for mainnet work: it handles Arc's protoco
    ```
    Compare against the testnet runtime code hash (§6, step 1). If they differ, stop: settings diverged.
 
+   *Corrected 2026-11-01:* the raw `deployedBytecode` hash never equals the on-chain hash, because the artifact zero-fills the six `USDC` immutable slots. Write `0x3600…0000` into the slots listed in the artifact's `deployedBytecode.immutableReferences` first, then compare. Alternatively, compare on-chain code with on-chain code (§6). Tooling used on 2026-11-01: no published Arc Foundry install was found, so standard Foundry 1.8.4 with the pinned solc 0.8.28 was used. The result was byte-identical (`evidence/bytecode-match.txt`).
+
 ## 5. Mainnet deployment
 
 ### 5.1 Deploy script (`script/Deploy.s.sol`)

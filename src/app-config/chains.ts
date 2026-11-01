@@ -1,23 +1,25 @@
 import { defineChain } from 'viem'
-import { requireChainByScpBlockchain } from '@/onchain-facts'
+import { ARC_FACTS, type ArcNetworkFacts, type NetworkKey } from './arc-facts'
 
 /**
- * Chain definitions for the app. Every value comes from @/onchain-facts (05-FRONTEND-SPEC 2.1).
+ * Chain definitions for the app (05-FRONTEND-SPEC 2.1), built from ./arc-facts. These are the parameters a
+ * wallet is given when it is asked to add the chain, so the name, RPC, explorer and USDC gas currency
+ * match what the Arc documentation lists.
  *
  * The native currency is USDC at 18 decimals. That is the gas unit only: it is never used for amounts.
- * Amounts are always the 6-decimal ERC-20 view (see src/lib/format.ts and @/onchain-money).
  */
-const testnetFacts = requireChainByScpBlockchain('ARC-TESTNET')
+function toChain(facts: ArcNetworkFacts) {
+  return defineChain({
+    id: facts.chainId,
+    name: facts.chainName,
+    nativeCurrency: { ...facts.nativeCurrency },
+    rpcUrls: { default: { http: [facts.rpcUrl] } },
+    blockExplorers: { default: { name: facts.explorerName, url: facts.explorerBase } },
+    testnet: facts.isTestnet,
+  })
+}
 
-export const arcTestnet = defineChain({
-  id: testnetFacts.chainId,
-  name: testnetFacts.name,
-  nativeCurrency: {
-    name: testnetFacts.nativeCurrency.symbol,
-    symbol: testnetFacts.nativeCurrency.symbol,
-    decimals: testnetFacts.nativeCurrency.decimals,
-  },
-  rpcUrls: { default: { http: [...testnetFacts.rpcUrls] } },
-  blockExplorers: { default: { name: 'Arc Testnet Explorer', url: testnetFacts.explorerBase } },
-  testnet: true,
-})
+export const arcTestnet = toChain(ARC_FACTS.testnet)
+export const arcMainnet = toChain(ARC_FACTS.mainnet)
+
+export const ARC_CHAINS: Record<NetworkKey, typeof arcTestnet> = { testnet: arcTestnet, mainnet: arcMainnet }

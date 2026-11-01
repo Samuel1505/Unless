@@ -30,5 +30,12 @@ bun run build
 
 ### Environment variables
 
-- `VITE_NETWORK`: the network the app talks to. Only `testnet` is configured; leave it unset for testnet.
+- `VITE_NETWORK`: the network the app talks to, `testnet` or `mainnet`. Unset means `testnet`. Any other value shows a configuration error page. `mainnet` uses real USDC.
 - `VITE_RETAINER_TESTNET`: optional. Overrides the retainer address recorded in `deployments/arc-testnet.json`.
+- `VITE_RETAINER_MAINNET`: optional. Overrides the retainer address recorded in `deployments/arc-mainnet.json`. With an override the app does not know the deployment block, so it reads recent history only and says it may be incomplete.
+
+`.env.example` lists these names. Copy it to `.env`; `.env` is never committed.
+
+### Hosting
+
+The build is static (`dist/`) with hash routing, so no rewrite rules are needed. The app must never be framed: `public/_headers` (Netlify, Cloudflare Pages) and `vercel.json` (Vercel) set `Content-Security-Policy: frame-ancestors 'none'` and `X-Frame-Options: DENY` for every path. If you use another host, set the same two headers.

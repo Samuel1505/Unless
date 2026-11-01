@@ -1,0 +1,35 @@
+Lineage proof: the Arc mainnet contract is the Arc Studio-built contract
+Date: 2026-11-01
+
+Studio project:  https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020
+Source commit:   https://github.com/Samuel1505/Unless/commit/4cff7547d657b8f0c3187cfa8225bf0decbb7d7e
+                 (pushed from the Studio workspace; tree ad1d0deb9a90f2b93e5eb76242c3cb698278ebb7)
+
+Testnet (deployed by Arc Studio)
+  chain     5042002
+  address   0x54414913081adb0d95b0f5aedc6a4c8a8d85c821
+  deployTx  0x5a421959e9218941d67139ca7e3caff8fa9d2d8b41d95f581b26699143ca8c7e (block 69092835)
+  keccak256(runtime code) = 0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79
+
+Mainnet (deployed with Foundry from a fresh clone of the commit above)
+  chain     5042
+  address   0x766bBE6b3819261F7C1161073551A27362c96047
+  deployTx  0x24a7f49850ff628acd68880c611b39921de4366cb7c500fef2da9391225f09ce (block 28998678)
+  keccak256(runtime code) = 0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79
+
+Result: IDENTICAL (11496 bytes each, including the compiler metadata suffix).
+
+Commands used:
+  cast code 0x54414913081adb0d95b0f5aedc6a4c8a8d85c821 --rpc-url https://rpc.testnet.arc.io | cast keccak
+  cast code 0x766bBE6b3819261F7C1161073551A27362c96047 --rpc-url https://rpc.mainnet.arc.io | cast keccak
+
+Post-deploy reads on mainnet: USDC() = 0x3600000000000000000000000000000000000000,
+nextRetainerId() = 0, MIN_WINDOW() = 60.
+
+Before deploying, the fresh clone's build was compared with the testnet contract: the artifact's
+deployedBytecode, with the USDC address written into its 6 immutable slots, equals the testnet
+runtime code byte for byte. (The raw artifact hash differs only because immutables are zero-filled
+in artifacts; see docs/07-DEPLOYMENT-RUNBOOK.md section 4.)
+
+Tooling note: Arc Foundry (arc-forge) has no install published that could be found; the deploy used
+standard Foundry 1.8.4 with the pinned solc 0.8.28. Runtime bytecode is identical either way.

@@ -1,0 +1,27 @@
+{
+  "network": "arc-mainnet",
+  "chainId": 5042,
+  "contract": "UnlessRetainer",
+  "address": "0x766bBE6b3819261F7C1161073551A27362c96047",
+  "deployTx": "0x24a7f49850ff628acd68880c611b39921de4366cb7c500fef2da9391225f09ce",
+  "block": 28998678,
+  "constructorArgs": ["0x3600000000000000000000000000000000000000"],
+  "compiler": {
+    "solc": "0.8.28",
+    "solcFull": "0.8.28+commit.7893614a",
+    "optimizer": true,
+    "runs": 200,
+    "evmVersion": "cancun",
+    "viaIR": false
+  },
+  "openzeppelin": "5.6.1",
+  "deployedBy": "forge 1.8.4 (Foundry) from Studio commit 4cff7547d657b8f0c3187cfa8225bf0decbb7d7e",
+  "deployer": "0x88aE55a562536862B6ec32784a640AaF0349b859",
+  "sourceRepo": "https://github.com/Samuel1505/Unless",
+  "sourceCommit": "4cff7547d657b8f0c3187cfa8225bf0decbb7d7e",
+  "studioProjectUrl": "https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "runtimeBytecodeKeccak": "0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79",
+  "gasUsed": 2562578,
+  "gasPriceGwei": 25,
+  "date": "2026-11-01"
+}

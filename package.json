@@ -10,7 +10,7 @@
     "fetch:abi": "bun run ./scripts/fetch-abi.ts",
     "lint": "oxlint --type-aware src scripts --fix; s=$?; oxlint --fix .; exit $((s>0?s:$?))",
     "typecheck": "tsc --noEmit",
-    "check": "bash scripts/check.sh",
+    "check": "bun run lint && bun run typecheck",
     "contracts:build": "forge build",
     "contracts:test": "forge test",
     "sync:abi": "bun run ./scripts/sync-abi.ts",
