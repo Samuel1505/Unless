@@ -1,0 +1,27 @@
+{
+  "network": "arc-testnet",
+  "chainId": 5042002,
+  "contract": "UnlessRetainer",
+  "address": "0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+  "deployTx": "0x5a421959e9218941d67139ca7e3caff8fa9d2d8b41d95f581b26699143ca8c7e",
+  "block": 69092835,
+  "constructorArgs": ["0x3600000000000000000000000000000000000000"],
+  "compiler": {
+    "solc": "0.8.28",
+    "solcFull": "0.8.28+commit.7893614a",
+    "optimizer": true,
+    "runs": 200,
+    "evmVersion": "cancun",
+    "viaIR": false
+  },
+  "openzeppelin": "5.6.1",
+  "deployedBy": "Arc Studio",
+  "deployer": "0x5B12Ce46C7194aD57d143bC22847224047b1Ef42",
+  "studioProjectUrl": "https://studio.arc.io/app/c5d3671f-867d-4c48-84c4-ba21f92f8020",
+  "explorerUrl": "https://explorer.testnet.arc.io/address/0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+  "runtimeBytecodeKeccak": "0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79",
+  "localRuntimeBytecodeKeccak": "0xb55307cd6fa12a300dc06259387577842a97685d3c6eeecf311d93fb17513ea7",
+  "localRuntimeBytecodeKeccakWithImmutables": "0x392029f2c9e51b363392c3f23e99539f29cc86d4932c470635d07c8dc37a4d79",
+  "runtimeBytecodeNote": "localRuntimeBytecodeKeccak hashes deployedBytecode from the build artifact, where the USDC immutable is still zero-filled, so it differs from the on-chain hash by design. localRuntimeBytecodeKeccakWithImmutables patches the constructor argument into the six immutable slots listed in the artifact and equals runtimeBytecodeKeccak: the deployed code is byte-identical to the local build.",
+  "date": "2026-10-25"
+}

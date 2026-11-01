@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "contractAddress": "0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+  "txHash": "0x5a421959e9218941d67139ca7e3caff8fa9d2d8b41d95f581b26699143ca8c7e",
+  "explorerUrl": "https://explorer.testnet.arc.io/address/0x54414913081adb0d95b0f5aedc6a4c8a8d85c821",
+  "chain": "Arc Testnet",
+  "contractId": "01a174e8-c321-7d75-a2aa-d06d024e5758",
+  "deployedAt": "2026-10-25T21:12:58.124Z",
+  "contractMetadataPath": "contracts/contract-metadata/UnlessRetainer.json",
+  "readBack": {
+    "USDC()": "0x3600000000000000000000000000000000000000",
+    "nextRetainerId()": "0"
+  }
+}

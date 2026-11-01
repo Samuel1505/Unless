@@ -1,0 +1,1278 @@
+No files changed, compilation skipped
+
+Ran 33 tests for contracts/test/UnlessRetainer.Approve.t.sol:UnlessRetainerApproveTest
+[PASS] test_approveClaim_afterPayableAt_stillPending_succeeds() (gas: 388686)
+[PASS] test_approveClaim_alreadyPaid_revertsClaimNotPending() (gas: 379541)
+[PASS] test_approveClaim_atPayableAt_succeeds() (gas: 376649)
+[PASS] test_approveClaim_byClient_paysFreelancerImmediately() (gas: 392959)
+[PASS] test_approveClaim_byFreelancer_revertsNotClient() (gas: 361577)
+[PASS] test_approveClaim_byStranger_revertsNotClient() (gas: 356395)
+[PASS] test_approveClaim_cancelled_revertsClaimNotPending() (gas: 360261)
+[PASS] test_approveClaim_clientOfOtherRetainer_revertsNotClient() (gas: 519145)
+[PASS] test_approveClaim_hugeClaimId_revertsClaimNotFound() (gas: 354111)
+[PASS] test_approveClaim_objected_revertsClaimNotPending() (gas: 361722)
+[PASS] test_approveClaim_oneOfTwoClaims_leavesOtherReserved() (gas: 459796)
+[PASS] test_approveClaim_paidOut_revertsClaimNotPending() (gas: 377696)
+[PASS] test_approveClaim_retainerWithoutClaims_revertsClaimNotFound() (gas: 258175)
+[PASS] test_approveClaim_strangerOnPaidClaim_revertsNotClientBeforeClaimNotPending() (gas: 374125)
+[PASS] test_approveClaim_strangerWithUnknownClaimId_revertsClaimNotFoundBeforeNotClient() (gas: 356013)
+[PASS] test_approveClaim_strangerWithUnknownRetainerId_revertsRetainerNotFound() (gas: 18265)
+[PASS] test_approveClaim_unknownClaimId_revertsClaimNotFound() (gas: 354131)
+[PASS] test_approveClaim_unknownRetainerId_revertsRetainerNotFound() (gas: 355823)
+[PASS] test_cancelClaim_afterPayableAt_succeeds() (gas: 370674)
+[PASS] test_cancelClaim_afterRetainerEnded_succeeds() (gas: 364436)
+[PASS] test_cancelClaim_alreadyCancelled_revertsClaimNotPending() (gas: 360228)
+[PASS] test_cancelClaim_byClient_revertsNotFreelancer() (gas: 354408)
+[PASS] test_cancelClaim_byFreelancer_unreservesWithoutMovingTokens() (gas: 375269)
+[PASS] test_cancelClaim_byStranger_revertsNotFreelancer() (gas: 363617)
+[PASS] test_cancelClaim_clientOnPaidClaim_revertsNotFreelancerBeforeClaimNotPending() (gas: 372141)
+[PASS] test_cancelClaim_objected_revertsClaimNotPending() (gas: 361687)
+[PASS] test_cancelClaim_oneOfTwoClaims_leavesOtherReserved() (gas: 443126)
+[PASS] test_cancelClaim_paid_revertsClaimNotPending() (gas: 379486)
+[PASS] test_cancelClaim_strangerOnCancelledClaim_revertsNotFreelancerBeforeClaimNotPending() (gas: 362034)
+[PASS] test_cancelClaim_strangerWithUnknownClaimId_revertsClaimNotFoundBeforeNotFreelancer() (gas: 356015)
+[PASS] test_cancelClaim_strangerWithUnknownRetainerId_revertsRetainerNotFound() (gas: 18275)
+[PASS] test_cancelClaim_unknownClaimId_revertsClaimNotFound() (gas: 354080)
+[PASS] test_cancelClaim_unknownRetainerId_revertsRetainerNotFound() (gas: 355817)
+Suite result: ok. 33 passed; 0 failed; 0 skipped; finished in 5.28ms (4.15ms CPU time)
+
+Ran 20 tests for contracts/test/UnlessRetainer.Extend.t.sol:UnlessRetainerExtendTest
+[PASS] test_extendEndTime_afterEnd_reEnablesRequestWithdrawal() (gas: 292363)
+[PASS] test_extendEndTime_afterEnd_toExactlyNow_keepsRetainerEnded() (gas: 269560)
+[PASS] test_extendEndTime_afterEnd_toFutureTime_reEnablesDeposit() (gas: 289965)
+[PASS] test_extendEndTime_afterEnd_toFutureTime_reEnablesFileClaim() (gas: 385454)
+[PASS] test_extendEndTime_afterEnd_toNowPlusOne_reopens() (gas: 359357)
+[PASS] test_extendEndTime_afterEnd_toStillPastTime_keepsRetainerEnded() (gas: 308898)
+[PASS] test_extendEndTime_byFreelancer_revertsNotClient() (gas: 256569)
+[PASS] test_extendEndTime_byOneSecond_succeeds() (gas: 266497)
+[PASS] test_extendEndTime_byOtherClient_revertsNotClient() (gas: 258604)
+[PASS] test_extendEndTime_byStrangerWithInvalidEnd_revertsNotClientBeforeEndTimeNotLater() (gas: 258419)
+[PASS] test_extendEndTime_byStranger_revertsNotClient() (gas: 258614)
+[PASS] test_extendEndTime_changesNothingElse() (gas: 394411)
+[PASS] test_extendEndTime_equalToCurrent_revertsEndTimeNotLater() (gas: 256580)
+[PASS] test_extendEndTime_multipleExtensions_endTimeOnlyIncreases() (gas: 328569)
+[PASS] test_extendEndTime_oneSecondEarlier_revertsEndTimeNotLater() (gas: 264871)
+[PASS] test_extendEndTime_toLaterTime_updatesEndAndEmits() (gas: 266539)
+[PASS] test_extendEndTime_toMaxUint64_succeedsThenFurtherExtensionReverts() (gas: 271597)
+[PASS] test_extendEndTime_toZero_revertsEndTimeNotLater() (gas: 256442)
+[PASS] test_extendEndTime_unknownIdByStranger_revertsRetainerNotFound() (gas: 20551)
+[PASS] test_extendEndTime_unknownId_revertsRetainerNotFound() (gas: 258423)
+Suite result: ok. 20 passed; 0 failed; 0 skipped; finished in 3.32ms (2.54ms CPU time)
+
+Ran 20 tests for contracts/test/UnlessRetainer.Deposit.t.sol:UnlessRetainerDepositTest
+[PASS] test_createRetainer_feeOnTransferToken_withDeposit_revertsDepositMismatchAndStoresNothing() (gas: 3266432)
+[PASS] test_createRetainer_feeOnTransferToken_zeroDeposit_succeeds() (gas: 3216637)
+[PASS] test_deposit_afterEndTime_revertsRetainerEnded() (gas: 196841)
+[PASS] test_deposit_atEndTime_revertsRetainerEnded() (gas: 196778)
+[PASS] test_deposit_byClient_increasesBalanceAndMovesTokens() (gas: 281949)
+[PASS] test_deposit_byFreelancer_revertsNotClient() (gas: 196093)
+[PASS] test_deposit_byStranger_revertsNotClient() (gas: 211246)
+[PASS] test_deposit_doesNotTouchOtherRetainers() (gas: 515177)
+[PASS] test_deposit_feeOnTransferToken_revertsDepositMismatchAndLeavesStateUnchanged() (gas: 3270930)
+[PASS] test_deposit_multipleDeposits_accumulate() (gas: 337531)
+[PASS] test_deposit_noApproval_revertsERC20InsufficientAllowance() (gas: 188197)
+[PASS] test_deposit_noRetainerAtAll_revertsRetainerNotFound() (gas: 18420)
+[PASS] test_deposit_onRetainerCreatedEmpty_fundsIt() (gas: 265719)
+[PASS] test_deposit_oneSecondBeforeEnd_succeeds() (gas: 266302)
+[PASS] test_deposit_strangerAfterEnd_revertsNotClient() (gas: 168081)
+[PASS] test_deposit_strangerWithZeroAmount_revertsNotClient() (gas: 167583)
+[PASS] test_deposit_unknownIdByStrangerWithZeroAmount_revertsRetainerNotFound() (gas: 18400)
+[PASS] test_deposit_unknownId_revertsRetainerNotFound() (gas: 197902)
+[PASS] test_deposit_zeroAmountAfterEnd_revertsZeroAmountBeforeRetainerEnded() (gas: 166095)
+[PASS] test_deposit_zeroAmount_revertsZeroAmount() (gas: 165643)
+Suite result: ok. 20 passed; 0 failed; 0 skipped; finished in 3.70ms (3.02ms CPU time)
+
+Ran 6 tests for contracts/test/UnlessRetainer.Fallback.t.sol:UnlessRetainerBlocklistFallbackTest
+[PASS] test_approveClaim_blockedFreelancerOnOneRetainer_leavesOtherRetainerUntouched() (gas: 794170)
+[PASS] test_approveClaim_blockedFreelancer_succeedsAndCreditsOwed() (gas: 474716)
+[PASS] test_payOutClaim_blockedFreelancer_doesNotBlockOtherClaimsOfSameRetainer() (gas: 537546)
+[PASS] test_payOutClaim_blockedFreelancer_retainerAccountingIdenticalToNormalPayout() (gas: 823883)
+[PASS] test_payOutClaim_blockedFreelancer_succeedsAndCreditsOwed() (gas: 483419)
+[PASS] test_payOutClaim_blockedThenUnblockedFreelancer_laterPayoutIsDirect() (gas: 523787)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 2.40ms (1.76ms CPU time)
+
+Ran 6 tests for contracts/test/UnlessRetainer.Fallback.t.sol:UnlessRetainerFalseReturnFallbackTest
+[PASS] test_approveClaim_blockedFreelancerOnOneRetainer_leavesOtherRetainerUntouched() (gas: 787107)
+[PASS] test_approveClaim_blockedFreelancer_succeedsAndCreditsOwed() (gas: 470150)
+[PASS] test_payOutClaim_blockedFreelancer_doesNotBlockOtherClaimsOfSameRetainer() (gas: 532911)
+[PASS] test_payOutClaim_blockedFreelancer_retainerAccountingIdenticalToNormalPayout() (gas: 816584)
+[PASS] test_payOutClaim_blockedFreelancer_succeedsAndCreditsOwed() (gas: 478853)
+[PASS] test_payOutClaim_blockedThenUnblockedFreelancer_laterPayoutIsDirect() (gas: 518985)
+Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 2.13ms (1.53ms CPU time)
+
+Ran 21 tests for contracts/test/UnlessRetainer.WithdrawalComplete.t.sol:UnlessRetainerCompleteWithdrawalTest
+[PASS] test_completeWithdrawal_afterEndTime_succeeds() (gas: 287550)
+[PASS] test_completeWithdrawal_afterZeroCompletion_newRequestAndClaimStillPayable() (gas: 360913)
+[PASS] test_completeWithdrawal_allRequestedMoneyClaimedMeanwhile_emitsZeroPaidAndMovesNothing() (gas: 402141)
+[PASS] test_completeWithdrawal_atEndTimeBoundary_succeeds() (gas: 292909)
+[PASS] test_completeWithdrawal_atReadyAt_succeeds() (gas: 292667)
+[PASS] test_completeWithdrawal_byClient_paysClient() (gas: 262744)
+[PASS] test_completeWithdrawal_byFreelancer_paysClientNotCaller() (gas: 282966)
+[PASS] test_completeWithdrawal_byStranger_paysClientAndEmitsFullEvent() (gas: 319000)
+[PASS] test_completeWithdrawal_calledTwice_secondRevertsNoWithdrawalPending() (gas: 282162)
+[PASS] test_completeWithdrawal_cancelledBeforeReadyAt_revertsNoWithdrawalPendingNotNoticeNotElapsed() (gas: 269716)
+[PASS] test_completeWithdrawal_claimApprovedDuringNotice_paysMinOfRequestedAndAvailable() (gas: 372609)
+[PASS] test_completeWithdrawal_claimExceedsLeftoverDuringNotice_paysOnlyWhatIsStillAvailable() (gas: 383555)
+[PASS] test_completeWithdrawal_claimLeavesEnoughAvailable_paysFullRequest() (gas: 382134)
+[PASS] test_completeWithdrawal_inSameBlockAsRequest_revertsNoticeNotElapsed() (gas: 285714)
+[PASS] test_completeWithdrawal_maxId_revertsRetainerNotFound() (gas: 18290)
+[PASS] test_completeWithdrawal_nonePendingLongAfter_revertsNoWithdrawalPending() (gas: 260874)
+[PASS] test_completeWithdrawal_nonePending_revertsNoWithdrawalPending() (gas: 260195)
+[PASS] test_completeWithdrawal_oneSecondAfterReadyAt_succeeds() (gas: 286477)
+[PASS] test_completeWithdrawal_oneSecondBeforeReadyAt_revertsNoticeNotElapsed() (gas: 298510)
+[PASS] test_completeWithdrawal_requestAllFundsThenClaimFiledDuringNotice_paysRemainder() (gas: 403593)
+[PASS] test_completeWithdrawal_unknownId_revertsRetainerNotFound() (gas: 260047)
+Suite result: ok. 21 passed; 0 failed; 0 skipped; finished in 3.68ms (2.99ms CPU time)
+
+Ran 28 tests for contracts/test/UnlessRetainer.FileClaim.t.sol:UnlessRetainerFileClaimTest
+[PASS] test_fileClaim_20PendingAndAmountAboveAvailable_revertsTooManyPendingClaims() (gas: 1797893)
+[PASS] test_fileClaim_281ByteNoteAndAmountAboveAvailable_revertsTextTooLong() (gas: 295629)
+[PASS] test_fileClaim_281ByteNoteWith20Pending_revertsTextTooLong() (gas: 1836445)
+[PASS] test_fileClaim_afterCancellingOneOfTwentyPending_succeedsAgain() (gas: 1890408)
+[PASS] test_fileClaim_afterEndTime_revertsRetainerEnded() (gas: 257323)
+[PASS] test_fileClaim_afterPayingOutOneOfTwentyPending_succeedsAgain() (gas: 1901187)
+[PASS] test_fileClaim_amountAboveAvailableByOne_revertsInsufficientAvailable() (gas: 269425)
+[PASS] test_fileClaim_amountEqualsAvailable_succeeds() (gas: 360742)
+[PASS] test_fileClaim_atEndTime_revertsRetainerEnded() (gas: 257239)
+[PASS] test_fileClaim_byClient_revertsNotFreelancer() (gas: 256719)
+[PASS] test_fileClaim_byStranger_revertsNotFreelancer() (gas: 258667)
+[PASS] test_fileClaim_emptyNote_succeedsWithEmptyNoteHash() (gas: 354720)
+[PASS] test_fileClaim_endedAndZeroAmount_revertsRetainerEnded() (gas: 257325)
+[PASS] test_fileClaim_freelancerOfOtherRetainer_revertsNotFreelancer() (gas: 485822)
+[PASS] test_fileClaim_happyPath_storesClaimReservesAndEmits() (gas: 374229)
+[PASS] test_fileClaim_note280Bytes_succeeds() (gas: 398203)
+[PASS] test_fileClaim_note281Bytes_revertsTextTooLong() (gas: 295587)
+[PASS] test_fileClaim_oneSecondBeforeEnd_succeeds() (gas: 360157)
+[PASS] test_fileClaim_secondClaimCannotUseReservedMoney_revertsInsufficientAvailable() (gas: 445252)
+[PASS] test_fileClaim_secondClaim_getsNextIdAndOwnPayableAt() (gas: 447316)
+[PASS] test_fileClaim_strangerOnEndedRetainer_revertsNotFreelancer() (gas: 259163)
+[PASS] test_fileClaim_twentyPendingAndNoMoneyLeft_revertsTooManyPendingClaims() (gas: 1799080)
+[PASS] test_fileClaim_twentyPending_succeedsAnd21stRevertsTooManyPendingClaims() (gas: 1818648)
+[PASS] test_fileClaim_unfundedRetainer_revertsInsufficientAvailable() (gas: 170602)
+[PASS] test_fileClaim_unknownIdByStranger_revertsRetainerNotFound() (gas: 57481)
+[PASS] test_fileClaim_unknownId_revertsRetainerNotFound() (gas: 258430)
+[PASS] test_fileClaim_zeroAmountAnd281ByteNote_revertsZeroAmount() (gas: 295560)
+[PASS] test_fileClaim_zeroAmount_revertsZeroAmount() (gas: 256902)
+Suite result: ok. 28 passed; 0 failed; 0 skipped; finished in 22.80ms (21.72ms CPU time)
+
+Ran 23 tests for contracts/test/UnlessRetainer.Isolation.t.sol:UnlessRetainerIsolationTest
+[PASS] test_isolation_actionsOnB_leaveAUntouched() (gas: 213781)
+[PASS] test_isolation_approveClaimOnA_leavesBUntouched() (gas: 247960)
+[PASS] test_isolation_cancelClaimOnA_leavesBUntouched() (gas: 225524)
+[PASS] test_isolation_clientOfA_cannotApproveClaimOnB() (gas: 126361)
+[PASS] test_isolation_clientOfA_cannotCancelWithdrawalOnB() (gas: 123983)
+[PASS] test_isolation_clientOfA_cannotDepositOnB() (gas: 150080)
+[PASS] test_isolation_clientOfA_cannotExtendB() (gas: 124461)
+[PASS] test_isolation_clientOfA_cannotObjectToClaimOnB() (gas: 126707)
+[PASS] test_isolation_clientOfA_cannotRequestWithdrawalOnB() (gas: 124182)
+[PASS] test_isolation_clientOfA_cannotWithdrawRemainderOfB() (gas: 42758)
+[PASS] test_isolation_clientOfB_cannotActOnA() (gas: 207111)
+[PASS] test_isolation_completeWithdrawalOnA_paysOnlyClientOfA() (gas: 158775)
+[PASS] test_isolation_depositOnA_leavesBUntouched() (gas: 158344)
+[PASS] test_isolation_extendEndTimeOnA_leavesBUntouched() (gas: 130621)
+[PASS] test_isolation_fileClaimOnA_leavesBUntouched() (gas: 222575)
+[PASS] test_isolation_freelancerOfA_cannotCancelClaimOnB() (gas: 128339)
+[PASS] test_isolation_freelancerOfA_cannotFileOnB() (gas: 127662)
+[PASS] test_isolation_freelancerOfB_cannotFileOnA() (gas: 82903)
+[PASS] test_isolation_objectToClaimOnA_leavesBUntouched() (gas: 229083)
+[PASS] test_isolation_payOutClaimOnA_leavesBUntouched() (gas: 251937)
+[PASS] test_isolation_withdrawRemainderOnA_leavesBUntouched() (gas: 148131)
+[PASS] test_isolation_withdrawalLifecycleOnA_leavesBUntouched() (gas: 261537)
+[PASS] test_isolation_withdrawalOnA_doesNotAffectBAvailable() (gas: 159376)
+Suite result: ok. 23 passed; 0 failed; 0 skipped; finished in 6.45ms (5.35ms CPU time)
+
+Ran 37 tests for contracts/test/UnlessRetainer.Views.t.sol:UnlessRetainerViewsTest
+[PASS] test_getClaim_afterEachResolution_reportsStatusAndPaidVia() (gas: 642130)
+[PASS] test_getClaim_afterFiling_returnsEveryField() (gas: 353601)
+[PASS] test_getClaim_claimIdEqualToClaimCount_revertsClaimNotFound() (gas: 433822)
+[PASS] test_getClaim_emptyNote_hashesEmptyBytes() (gas: 351976)
+[PASS] test_getClaim_maxClaimId_revertsClaimNotFound() (gas: 352254)
+[PASS] test_getClaim_otherRetainersClaimId_revertsClaimNotFound() (gas: 583356)
+[PASS] test_getClaim_unknownRetainerAndUnknownClaim_revertsRetainerNotFound() (gas: 12448)
+[PASS] test_getClaim_unknownRetainer_revertsRetainerNotFound() (gas: 354025)
+[PASS] test_getClaims_claimsOfOtherRetainer_areNotMixedIn() (gas: 1293658)
+[PASS] test_getClaims_fullRange_returnsAllClaimsInOrder() (gas: 1003118)
+[PASS] test_getClaims_limitExceedsRemaining_clampsToClaimsAfterOffset() (gas: 953945)
+[PASS] test_getClaims_limitZero_returnsEmpty() (gas: 941332)
+[PASS] test_getClaims_maxLimit_returnsEverythingAfterOffset() (gas: 1046634)
+[PASS] test_getClaims_maxOffset_returnsEmptyWithoutOverflow() (gas: 941096)
+[PASS] test_getClaims_middleWindow_returnsExactSlice() (gas: 962068)
+[PASS] test_getClaims_offsetBeyondClaimCount_returnsEmpty() (gas: 939118)
+[PASS] test_getClaims_offsetEqualToClaimCount_returnsEmpty() (gas: 937244)
+[PASS] test_getClaims_offsetLastClaim_returnsOne() (gas: 945779)
+[PASS] test_getClaims_retainerWithoutClaims_returnsEmpty() (gas: 256750)
+[PASS] test_getClaims_setupHasMixedStatuses() (gas: 967545)
+[PASS] test_getClaims_singleItemPages_walkEveryClaim() (gas: 1018586)
+[PASS] test_getClaims_unknownRetainerOnFreshContract_returnsEmpty() (gas: 8576)
+[PASS] test_getClaims_unknownRetainer_returnsEmptyAndDoesNotRevert() (gas: 944951)
+[PASS] test_getRetainer_afterCreation_returnsEveryField() (gas: 261920)
+[PASS] test_getRetainer_availableAfterPayoutObjectionAndCancel_tracksReservations() (gas: 566235)
+[PASS] test_getRetainer_availableWithReservationsAndPendingWithdrawal_subtractsOnlyReserved() (gas: 360508)
+[PASS] test_getRetainer_createdWithoutDeposit_hasZeroBalanceAndAvailable() (gas: 172205)
+[PASS] test_getRetainer_endedFlag_flipsExactlyAtEndTime() (gas: 283300)
+[PASS] test_getRetainer_idEqualToNextRetainerId_revertsRetainerNotFound() (gas: 434795)
+[PASS] test_getRetainer_maxId_revertsRetainerNotFound() (gas: 13755)
+[PASS] test_getRetainer_secondRetainer_returnsItsOwnFields() (gas: 502891)
+[PASS] test_getRetainer_unknownIdWithNoRetainers_revertsRetainerNotFound() (gas: 13729)
+[PASS] test_retainersOfClientAndFreelancer_strangerAndZeroAddress_returnEmpty() (gas: 276421)
+[PASS] test_retainersOfClient_freshContract_returnsEmpty() (gas: 19508)
+[PASS] test_retainersOfClient_severalRetainers_listsIdsInCreationOrder() (gas: 782156)
+[PASS] test_retainersOfClient_unaffectedByLaterActivity() (gas: 288184)
+[PASS] test_retainersOfFreelancer_sameFreelancerAcrossSeveralClients_listsAllInOrder() (gas: 805149)
+Suite result: ok. 37 passed; 0 failed; 0 skipped; finished in 22.12ms (21.37ms CPU time)
+
+Ran 21 tests for contracts/test/UnlessRetainer.Object.t.sol:UnlessRetainerObjectTest
+[PASS] test_objectToClaim_alreadyObjected_revertsClaimNotPending() (gas: 362083)
+[PASS] test_objectToClaim_atPayableAt_revertsObjectionWindowClosed() (gas: 365693)
+[PASS] test_objectToClaim_byClient_unreservesWithoutMovingTokens() (gas: 383331)
+[PASS] test_objectToClaim_byFreelancer_revertsNotClient() (gas: 361975)
+[PASS] test_objectToClaim_byStranger_revertsNotClient() (gas: 356738)
+[PASS] test_objectToClaim_cancelled_revertsClaimNotPending() (gas: 360556)
+[PASS] test_objectToClaim_emptyReason_succeeds() (gas: 362007)
+[PASS] test_objectToClaim_oneOfTwoClaims_leavesOtherReserved() (gas: 445750)
+[PASS] test_objectToClaim_oneSecondAfterPayableAt_revertsObjectionWindowClosed() (gas: 358500)
+[PASS] test_objectToClaim_oneSecondBeforePayableAt_succeeds() (gas: 366110)
+[PASS] test_objectToClaim_paidClaimAfterWindow_revertsClaimNotPendingBeforeObjectionWindowClosed() (gas: 378140)
+[PASS] test_objectToClaim_paid_revertsClaimNotPending() (gas: 372634)
+[PASS] test_objectToClaim_pendingPastWindowWith281ByteReason_revertsObjectionWindowClosed() (gas: 397243)
+[PASS] test_objectToClaim_reason280Bytes_succeeds() (gas: 405296)
+[PASS] test_objectToClaim_reason281Bytes_revertsTextTooLong() (gas: 401033)
+[PASS] test_objectToClaim_strangerAfterWindow_revertsNotClientBeforeObjectionWindowClosed() (gas: 360150)
+[PASS] test_objectToClaim_strangerOnObjectedClaim_revertsNotClientBeforeClaimNotPending() (gas: 364003)
+[PASS] test_objectToClaim_strangerWithUnknownClaimId_revertsClaimNotFoundBeforeNotClient() (gas: 356446)
+[PASS] test_objectToClaim_strangerWithUnknownRetainerId_revertsRetainerNotFound() (gas: 18691)
+[PASS] test_objectToClaim_unknownClaimId_revertsClaimNotFound() (gas: 354433)
+[PASS] test_objectToClaim_unknownRetainerId_revertsRetainerNotFound() (gas: 356240)
+Suite result: ok. 21 passed; 0 failed; 0 skipped; finished in 15.47ms (14.82ms CPU time)
+
+Ran 14 tests for contracts/test/UnlessRetainer.Owed.t.sol:UnlessRetainerOwedBlocklistTest
+[PASS] test_completeWithdrawal_blockedClientOnOneRetainer_leavesOtherRetainerUntouched() (gas: 659834)
+[PASS] test_completeWithdrawal_blockedClient_retainerAccountingIdenticalToNormalCompletion() (gas: 630609)
+[PASS] test_completeWithdrawal_blockedClient_succeedsAndCreditsOwed() (gas: 390999)
+[PASS] test_completeWithdrawal_twoDeferredCompletions_accumulateOwed() (gas: 391421)
+[PASS] test_withdrawOwed_blockedClientAfterUnblock_transfersAndZeroesCredit() (gas: 350293)
+[PASS] test_withdrawOwed_blockedFreelancerAfterUnblock_transfersAndZeroesCredit() (gas: 449892)
+[PASS] test_withdrawOwed_bothPartiesCredited_unblockedOneWithdrawsOtherPreserved() (gas: 481479)
+[PASS] test_withdrawOwed_calledTwice_secondRevertsNothingOwed() (gas: 332280)
+[PASS] test_withdrawOwed_clientStillBlocked_revertsAndPreservesCredit() (gas: 345436)
+[PASS] test_withdrawOwed_freelancerCredit_cannotBeWithdrawnByClientOrStranger() (gas: 436514)
+[PASS] test_withdrawOwed_freelancerStillBlocked_revertsAndPreservesCredit() (gas: 429291)
+[PASS] test_withdrawOwed_freshContract_revertsNothingOwed() (gas: 18216)
+[PASS] test_withdrawOwed_noCredit_revertsNothingOwed() (gas: 362273)
+[PASS] test_withdrawRemainder_blockedClient_succeedsAndCreditsOwed() (gas: 331124)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 5.24ms (4.52ms CPU time)
+
+Ran 14 tests for contracts/test/UnlessRetainer.Owed.t.sol:UnlessRetainerOwedFalseReturnTest
+[PASS] test_completeWithdrawal_blockedClientOnOneRetainer_leavesOtherRetainerUntouched() (gas: 656535)
+[PASS] test_completeWithdrawal_blockedClient_retainerAccountingIdenticalToNormalCompletion() (gas: 627310)
+[PASS] test_completeWithdrawal_blockedClient_succeedsAndCreditsOwed() (gas: 388433)
+[PASS] test_completeWithdrawal_twoDeferredCompletions_accumulateOwed() (gas: 389124)
+[PASS] test_withdrawOwed_blockedClientAfterUnblock_transfersAndZeroesCredit() (gas: 348052)
+[PASS] test_withdrawOwed_blockedFreelancerAfterUnblock_transfersAndZeroesCredit() (gas: 445090)
+[PASS] test_withdrawOwed_bothPartiesCredited_unblockedOneWithdrawsOtherPreserved() (gas: 478698)
+[PASS] test_withdrawOwed_calledTwice_secondRevertsNothingOwed() (gas: 330039)
+[PASS] test_withdrawOwed_clientStillBlocked_revertsAndPreservesCredit() (gas: 343267)
+[PASS] test_withdrawOwed_freelancerCredit_cannotBeWithdrawnByClientOrStranger() (gas: 431948)
+[PASS] test_withdrawOwed_freelancerStillBlocked_revertsAndPreservesCredit() (gas: 424815)
+[PASS] test_withdrawOwed_freshContract_revertsNothingOwed() (gas: 18216)
+[PASS] test_withdrawOwed_noCredit_revertsNothingOwed() (gas: 359707)
+[PASS] test_withdrawRemainder_blockedClient_succeedsAndCreditsOwed() (gas: 328882)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 4.43ms (3.78ms CPU time)
+
+Ran 18 tests for contracts/test/UnlessRetainer.PayOut.t.sol:UnlessRetainerPayOutTest
+[PASS] test_payOutClaim_accounting_updatesAllFieldsAndEmitsNoDeferral() (gas: 474067)
+[PASS] test_payOutClaim_afterApproveNow_revertsClaimNotPending() (gas: 377607)
+[PASS] test_payOutClaim_afterCancel_revertsClaimNotPending() (gas: 372766)
+[PASS] test_payOutClaim_afterObjection_revertsClaimNotPending() (gas: 374292)
+[PASS] test_payOutClaim_atPayableAt_succeeds() (gas: 386080)
+[PASS] test_payOutClaim_byClientAfterPayableAt_succeeds() (gas: 375855)
+[PASS] test_payOutClaim_byClientBeforePayableAt_revertsObjectionWindowOpen() (gas: 354562)
+[PASS] test_payOutClaim_byFreelancerAfterPayableAt_succeeds() (gas: 374532)
+[PASS] test_payOutClaim_byFreelancerBeforePayableAt_revertsObjectionWindowOpen() (gas: 354565)
+[PASS] test_payOutClaim_byStranger_paysFreelancerAndStrangerReceivesNothing() (gas: 391815)
+[PASS] test_payOutClaim_claimIdOfOtherRetainer_revertsClaimNotFound() (gas: 587258)
+[PASS] test_payOutClaim_doublePayout_revertsClaimNotPending() (gas: 386191)
+[PASS] test_payOutClaim_longAfterPayableAndAfterRetainerEnd_succeeds() (gas: 373764)
+[PASS] test_payOutClaim_objectedClaimBeforePayableAt_revertsClaimNotPendingBeforeObjectionWindowOpen() (gas: 363608)
+[PASS] test_payOutClaim_oneSecondAfterPayableAt_succeeds() (gas: 386101)
+[PASS] test_payOutClaim_oneSecondBeforePayableAt_revertsObjectionWindowOpen() (gas: 367348)
+[PASS] test_payOutClaim_unknownClaimId_revertsClaimNotFound() (gas: 356677)
+[PASS] test_payOutClaim_unknownRetainerId_revertsRetainerNotFound() (gas: 357896)
+Suite result: ok. 18 passed; 0 failed; 0 skipped; finished in 15.40ms (14.77ms CPU time)
+
+Ran 14 tests for contracts/test/UnlessRetainer.WithdrawalCancel.t.sol:UnlessRetainerCancelWithdrawalTest
+[PASS] test_cancelWithdrawal_afterCompletion_revertsNoWithdrawalPending() (gas: 282211)
+[PASS] test_cancelWithdrawal_afterEndTime_succeeds() (gas: 270607)
+[PASS] test_cancelWithdrawal_afterNoticeElapsedButBeforeCompletion_succeeds() (gas: 276579)
+[PASS] test_cancelWithdrawal_byClient_clearsBothFieldsAndEmits() (gas: 382048)
+[PASS] test_cancelWithdrawal_byFreelancer_revertsNotClient() (gas: 289888)
+[PASS] test_cancelWithdrawal_byOtherClient_revertsNotClient() (gas: 285427)
+[PASS] test_cancelWithdrawal_byStranger_revertsNotClient() (gas: 285438)
+[PASS] test_cancelWithdrawal_calledTwice_secondRevertsNoWithdrawalPending() (gas: 267306)
+[PASS] test_cancelWithdrawal_nonePending_revertsNoWithdrawalPending() (gas: 258342)
+[PASS] test_cancelWithdrawal_strangerWhenNonePending_revertsNotClient() (gas: 258105)
+[PASS] test_cancelWithdrawal_thenComplete_revertsNoWithdrawalPending() (gas: 275656)
+[PASS] test_cancelWithdrawal_thenNewRequest_succeeds() (gas: 296126)
+[PASS] test_cancelWithdrawal_unknownIdByStranger_revertsRetainerNotFound() (gas: 18257)
+[PASS] test_cancelWithdrawal_unknownId_revertsRetainerNotFound() (gas: 257945)
+Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 2.31ms (1.59ms CPU time)
+
+Ran 5 tests for contracts/test/UnlessRetainer.Properties.t.sol:UnlessRetainerPropertiesTest
+[PASS] testFuzz_fileClaim_neverExceedsAvailable(uint128,uint128) (runs: 256, μ: 410133, ~: 445273)
+[PASS] testFuzz_payOut_window_boundaries(uint32,uint32) (runs: 256, μ: 363352, ~: 369149)
+[PASS] test_actionsOnOneRetainer_leaveAnotherRetainerCompletelyUntouched() (gas: 1010518)
+[PASS] test_mixedActions_conserveFundsAndReservations() (gas: 1202983)
+[PASS] test_payOutAndApprove_onSecondRetainer_leaveFirstRetainerUntouched() (gas: 821578)
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 95.40ms (94.60ms CPU time)
+
+Ran 24 tests for contracts/test/UnlessRetainer.Remainder.t.sol:UnlessRetainerRemainderTest
+[PASS] test_withdrawRemainder_afterEnd_paysClientEmitsAndUpdatesTotals() (gas: 279134)
+[PASS] test_withdrawRemainder_afterExtendReopens_revertsRetainerNotEnded() (gas: 239103)
+[PASS] test_withdrawRemainder_atEndTime_succeeds() (gas: 234035)
+[PASS] test_withdrawRemainder_beforeEndAndZeroAvailable_revertsRetainerNotEnded() (gas: 165517)
+[PASS] test_withdrawRemainder_byFreelancerBeforeEnd_revertsNotClient() (gas: 256225)
+[PASS] test_withdrawRemainder_byOtherClient_revertsNotClient() (gas: 258711)
+[PASS] test_withdrawRemainder_byStrangerAfterEndWithZeroAvailable_revertsNotClient() (gas: 167894)
+[PASS] test_withdrawRemainder_byStrangerAfterEnd_revertsNotClient() (gas: 258699)
+[PASS] test_withdrawRemainder_byStrangerBeforeEnd_revertsNotClient() (gas: 258182)
+[PASS] test_withdrawRemainder_calledTwice_secondRevertsZeroAmount() (gas: 231174)
+[PASS] test_withdrawRemainder_everythingReservedWithPendingWithdrawal_revertsZeroAmountAndKeepsRequest() (gas: 372695)
+[PASS] test_withdrawRemainder_everythingReserved_revertsZeroAmount() (gas: 362094)
+[PASS] test_withdrawRemainder_oneSecondAfterEnd_succeeds() (gas: 234110)
+[PASS] test_withdrawRemainder_oneSecondBeforeEnd_revertsRetainerNotEnded() (gas: 256983)
+[PASS] test_withdrawRemainder_rightAfterCreation_revertsRetainerNotEnded() (gas: 256390)
+[PASS] test_withdrawRemainder_thenApproveClaim_pendingClaimStillPaysFreelancer() (gas: 363771)
+[PASS] test_withdrawRemainder_thenPayOutClaim_pendingClaimStillPaysFreelancer() (gas: 367042)
+[PASS] test_withdrawRemainder_unfundedRetainerAfterEnd_revertsZeroAmount() (gas: 168327)
+[PASS] test_withdrawRemainder_unknownIdByStranger_revertsRetainerNotFound() (gas: 18289)
+[PASS] test_withdrawRemainder_unknownId_revertsRetainerNotFound() (gas: 257988)
+[PASS] test_withdrawRemainder_withPendingClaims_paysOnlyAvailableAndKeepsReserved() (gas: 388619)
+[PASS] test_withdrawRemainder_withPendingWithdrawalAndClaims_paysAllAvailableNotJustRequested() (gas: 382984)
+[PASS] test_withdrawRemainder_withPendingWithdrawal_emitsCancelledBeforeRemainderAndClears() (gas: 274916)
+[PASS] test_withdrawRemainder_withoutPendingWithdrawal_emitsOnlyRemainder() (gas: 231882)
+Suite result: ok. 24 passed; 0 failed; 0 skipped; finished in 3.29ms (2.68ms CPU time)
+
+Ran 1 test for contracts/test/UnlessRetainer.WorkedExample.t.sol:UnlessRetainerWorkedExampleTest
+[PASS] test_workedExample_matchesSpecTable() (gas: 872518)
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.29ms (1.50ms CPU time)
+
+Ran 27 tests for contracts/test/UnlessRetainer.t.sol:UnlessRetainerTest
+[PASS] test_constants_matchSpec() (gas: 9355)
+[PASS] test_constructor_setsUSDC() (gas: 7862)
+[PASS] test_constructor_zeroAddress_revertsInvalidToken() (gas: 60889)
+[PASS] test_createRetainer_allowanceOneShort_revertsERC20InsufficientAllowance() (gas: 216515)
+[PASS] test_createRetainer_badNoticeAndEndTooSoon_revertsNoticeOutOfRange() (gas: 19125)
+[PASS] test_createRetainer_badWindowAndBadNotice_revertsWindowOutOfRange() (gas: 19212)
+[PASS] test_createRetainer_calledRepeatedly_incrementsIdsAndAppendsIndexes() (gas: 461943)
+[PASS] test_createRetainer_endTimeEqualsNowPlusNotice_revertsEndTimeTooSoon() (gas: 42018)
+[PASS] test_createRetainer_endTimeInPast_revertsEndTimeTooSoon() (gas: 41932)
+[PASS] test_createRetainer_endTimeOneAfterNotice_succeeds() (gas: 173020)
+[PASS] test_createRetainer_endTooSoonAndNoAllowance_revertsEndTimeTooSoon() (gas: 19303)
+[PASS] test_createRetainer_freelancerIsCallerAndBadWindow_revertsInvalidFreelancer() (gas: 16981)
+[PASS] test_createRetainer_freelancerIsCaller_revertsInvalidFreelancer() (gas: 43833)
+[PASS] test_createRetainer_happyPath_storesFieldsIndexesAndEmitsInOrder() (gas: 285977)
+[PASS] test_createRetainer_noApproval_revertsERC20InsufficientAllowanceAndStoresNothing() (gas: 195152)
+[PASS] test_createRetainer_noticeAboveMax_revertsNoticeOutOfRange() (gas: 42105)
+[PASS] test_createRetainer_noticeBelowMin_revertsNoticeOutOfRange() (gas: 44036)
+[PASS] test_createRetainer_noticeEqualsMax_succeeds() (gas: 172967)
+[PASS] test_createRetainer_noticeEqualsMin_succeeds() (gas: 175029)
+[PASS] test_createRetainer_windowAboveMax_revertsWindowOutOfRange() (gas: 44055)
+[PASS] test_createRetainer_windowBelowMin_revertsWindowOutOfRange() (gas: 44016)
+[PASS] test_createRetainer_windowEqualsMax_succeeds() (gas: 175050)
+[PASS] test_createRetainer_windowEqualsMin_succeeds() (gas: 175071)
+[PASS] test_createRetainer_withDeposit_recordsBalanceAndMovesTokens() (gas: 271110)
+[PASS] test_createRetainer_zeroFreelancerAndBadWindow_revertsInvalidFreelancer() (gas: 16819)
+[PASS] test_createRetainer_zeroFreelancer_revertsInvalidFreelancer() (gas: 43622)
+[PASS] test_createRetainer_zeroInitialDeposit_movesNoTokensAndEmitsNoDeposited() (gas: 195576)
+Suite result: ok. 27 passed; 0 failed; 0 skipped; finished in 3.16ms (2.23ms CPU time)
+
+Ran 2 tests for contracts/test/UnlessRetainer.WithdrawalFuzz.t.sol:UnlessRetainerWithdrawalFuzzTest
+[PASS] testFuzz_completeWithdrawal_paysMinOfRequestedAndAvailable(uint128,uint128,uint128) (runs: 256, μ: 418035, ~: 423659)
+[PASS] testFuzz_withdrawal_notice_boundaries(uint32,uint32) (runs: 256, μ: 303513, ~: 304226)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 122.04ms (121.35ms CPU time)
+
+Ran 31 tests for contracts/test/UnlessRetainer.WithdrawalRequest.t.sol:UnlessRetainerRequestWithdrawalTest
+[PASS] test_fileClaim_whileWithdrawalPending_succeedsAndReservesFromSameMoney() (gas: 383517)
+[PASS] test_requestWithdrawal_afterCancel_newRequestSucceeds() (gas: 303062)
+[PASS] test_requestWithdrawal_afterCompletion_newRequestSucceeds() (gas: 324589)
+[PASS] test_requestWithdrawal_afterEndTime_revertsRetainerEnded() (gas: 257108)
+[PASS] test_requestWithdrawal_atEndTime_revertsRetainerEnded() (gas: 257045)
+[PASS] test_requestWithdrawal_atLaterTime_readyAtIsNowPlusNotice() (gas: 287547)
+[PASS] test_requestWithdrawal_byClient_setsFieldsAndEmits() (gas: 287285)
+[PASS] test_requestWithdrawal_byFreelancer_revertsNotClient() (gas: 256279)
+[PASS] test_requestWithdrawal_byOtherClient_revertsNotClient() (gas: 258346)
+[PASS] test_requestWithdrawal_byStranger_revertsNotClient() (gas: 258303)
+[PASS] test_requestWithdrawal_endedAndTooLarge_revertsRetainerEnded() (gas: 256957)
+[PASS] test_requestWithdrawal_endedAndWithdrawalPending_revertsRetainerEnded() (gas: 284355)
+[PASS] test_requestWithdrawal_endedAndZeroAmount_revertsRetainerEnded() (gas: 257000)
+[PASS] test_requestWithdrawal_equalToAvailable_succeeds() (gas: 363175)
+[PASS] test_requestWithdrawal_everythingReserved_revertsInsufficientAvailable() (gas: 354866)
+[PASS] test_requestWithdrawal_maxId_revertsRetainerNotFound() (gas: 18475)
+[PASS] test_requestWithdrawal_oneAboveAvailable_revertsInsufficientAvailable() (gas: 361110)
+[PASS] test_requestWithdrawal_oneSecondBeforeEnd_succeeds() (gas: 288278)
+[PASS] test_requestWithdrawal_requestAgainAfterFirstCompleted_canDrainRemainder() (gas: 302491)
+[PASS] test_requestWithdrawal_reservesNothing_availableAndBalancesUnchanged() (gas: 377888)
+[PASS] test_requestWithdrawal_strangerOnEndedRetainer_revertsNotClient() (gas: 258957)
+[PASS] test_requestWithdrawal_strangerWhilePending_revertsNotClient() (gas: 285602)
+[PASS] test_requestWithdrawal_strangerWithZeroAmount_revertsNotClient() (gas: 258367)
+[PASS] test_requestWithdrawal_unfundedRetainer_revertsInsufficientAvailable() (gas: 170167)
+[PASS] test_requestWithdrawal_unknownIdByStranger_revertsRetainerNotFound() (gas: 18391)
+[PASS] test_requestWithdrawal_unknownId_revertsRetainerNotFound() (gas: 258153)
+[PASS] test_requestWithdrawal_whilePendingWithTooLargeAmount_revertsWithdrawalAlreadyPending() (gas: 283921)
+[PASS] test_requestWithdrawal_whilePendingWithZeroAmount_revertsWithdrawalAlreadyPending() (gas: 284008)
+[PASS] test_requestWithdrawal_whilePending_revertsWithdrawalAlreadyPending() (gas: 296288)
+[PASS] test_requestWithdrawal_zeroAmountOnUnfundedRetainer_revertsZeroAmount() (gas: 167844)
+[PASS] test_requestWithdrawal_zeroAmount_revertsZeroAmount() (gas: 258651)
+Suite result: ok. 31 passed; 0 failed; 0 skipped; finished in 3.91ms (3.23ms CPU time)
+
+Ran 13 tests for contracts/test/UnlessRetainer.invariant.t.sol:UnlessRetainerInvariantTest
+[PASS] invariant_I1_reservedLeBalance() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 3 4
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 2 5
+  SUMMARY valid/skipped/reverted: 79 49 0
+  CUMULATIVE create valid/skipped: 1777 5561
+  CUMULATIVE deposit valid/skipped: 5075 2461
+  CUMULATIVE fileClaim valid/skipped: 6711 960
+  CUMULATIVE approve valid/skipped: 5880 1630
+  CUMULATIVE object valid/skipped: 2865 4764
+  CUMULATIVE cancel valid/skipped: 5736 1668
+  CUMULATIVE payOut valid/skipped: 4920 2609
+  CUMULATIVE requestWithdrawal valid/skipped: 5344 2465
+  CUMULATIVE cancelWithdrawal valid/skipped: 3001 4636
+  CUMULATIVE completeWithdrawal valid/skipped: 1684 5875
+  CUMULATIVE withdrawRemainder valid/skipped: 1254 6605
+  CUMULATIVE extendEnd valid/skipped: 7740 0
+  CUMULATIVE warp valid/skipped: 7628 0
+  CUMULATIVE toggleBlocklist valid/skipped: 7381 0
+  CUMULATIVE withdrawOwed valid/skipped: 608 6959
+  CUMULATIVE valid / total handler calls: 67725 113920
+
+[PASS] invariant_I2_reservedMatchesPending() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 80 48 0
+  CUMULATIVE create valid/skipped: 3637 11413
+  CUMULATIVE deposit valid/skipped: 10359 5141
+  CUMULATIVE fileClaim valid/skipped: 13815 1928
+  CUMULATIVE approve valid/skipped: 12045 3315
+  CUMULATIVE object valid/skipped: 5889 9732
+  CUMULATIVE cancel valid/skipped: 11828 3355
+  CUMULATIVE payOut valid/skipped: 10128 5272
+  CUMULATIVE requestWithdrawal valid/skipped: 10990 5012
+  CUMULATIVE cancelWithdrawal valid/skipped: 6203 9488
+  CUMULATIVE completeWithdrawal valid/skipped: 3422 11988
+  CUMULATIVE withdrawRemainder valid/skipped: 2566 13498
+  CUMULATIVE extendEnd valid/skipped: 15854 0
+  CUMULATIVE warp valid/skipped: 15543 0
+  CUMULATIVE toggleBlocklist valid/skipped: 15080 0
+  CUMULATIVE withdrawOwed valid/skipped: 1245 14296
+  CUMULATIVE valid / total handler calls: 138759 233216
+
+[PASS] invariant_I3_solvency() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 80 48 0
+  CUMULATIVE create valid/skipped: 5176 16231
+  CUMULATIVE deposit valid/skipped: 14658 7360
+  CUMULATIVE fileClaim valid/skipped: 19665 2785
+  CUMULATIVE approve valid/skipped: 17165 4769
+  CUMULATIVE object valid/skipped: 8402 13915
+  CUMULATIVE cancel valid/skipped: 16793 4783
+  CUMULATIVE payOut valid/skipped: 14389 7523
+  CUMULATIVE requestWithdrawal valid/skipped: 15580 7135
+  CUMULATIVE cancelWithdrawal valid/skipped: 8793 13494
+  CUMULATIVE completeWithdrawal valid/skipped: 4844 17085
+  CUMULATIVE withdrawRemainder valid/skipped: 3628 19223
+  CUMULATIVE extendEnd valid/skipped: 22579 0
+  CUMULATIVE warp valid/skipped: 22171 0
+  CUMULATIVE toggleBlocklist valid/skipped: 21478 0
+  CUMULATIVE withdrawOwed valid/skipped: 1786 20342
+  CUMULATIVE valid / total handler calls: 197295 332032
+
+[PASS] invariant_I3b_solvencyIsExact() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 80 48 0
+  CUMULATIVE create valid/skipped: 1737 5450
+  CUMULATIVE deposit valid/skipped: 4961 2411
+  CUMULATIVE fileClaim valid/skipped: 6558 950
+  CUMULATIVE approve valid/skipped: 5742 1593
+  CUMULATIVE object valid/skipped: 2789 4648
+  CUMULATIVE cancel valid/skipped: 5616 1631
+  CUMULATIVE payOut valid/skipped: 4814 2549
+  CUMULATIVE requestWithdrawal valid/skipped: 5222 2408
+  CUMULATIVE cancelWithdrawal valid/skipped: 2928 4525
+  CUMULATIVE completeWithdrawal valid/skipped: 1654 5733
+  CUMULATIVE withdrawRemainder valid/skipped: 1232 6458
+  CUMULATIVE extendEnd valid/skipped: 7554 0
+  CUMULATIVE warp valid/skipped: 7457 0
+  CUMULATIVE toggleBlocklist valid/skipped: 7213 0
+  CUMULATIVE withdrawOwed valid/skipped: 594 6810
+  CUMULATIVE valid / total handler calls: 66192 111360
+
+[PASS] invariant_I4_conservation() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 3 4
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 2 5
+  SUMMARY valid/skipped/reverted: 79 49 0
+  CUMULATIVE create valid/skipped: 3089 9618
+  CUMULATIVE deposit valid/skipped: 8745 4408
+  CUMULATIVE fileClaim valid/skipped: 11710 1666
+  CUMULATIVE approve valid/skipped: 10336 2809
+  CUMULATIVE object valid/skipped: 5022 8297
+  CUMULATIVE cancel valid/skipped: 9987 2809
+  CUMULATIVE payOut valid/skipped: 8600 4484
+  CUMULATIVE requestWithdrawal valid/skipped: 9283 4270
+  CUMULATIVE cancelWithdrawal valid/skipped: 5248 8019
+  CUMULATIVE completeWithdrawal valid/skipped: 2901 10235
+  CUMULATIVE withdrawRemainder valid/skipped: 2162 11494
+  CUMULATIVE extendEnd valid/skipped: 13489 0
+  CUMULATIVE warp valid/skipped: 13300 0
+  CUMULATIVE toggleBlocklist valid/skipped: 12796 0
+  CUMULATIVE withdrawOwed valid/skipped: 1041 12152
+  CUMULATIVE valid / total handler calls: 117864 198144
+
+[PASS] invariant_I5_destinationSafety() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 80 48 0
+  CUMULATIVE create valid/skipped: 5854 18341
+  CUMULATIVE deposit valid/skipped: 16524 8420
+  CUMULATIVE fileClaim valid/skipped: 22260 3152
+  CUMULATIVE approve valid/skipped: 19414 5400
+  CUMULATIVE object valid/skipped: 9511 15707
+  CUMULATIVE cancel valid/skipped: 19002 5433
+  CUMULATIVE payOut valid/skipped: 16273 8509
+  CUMULATIVE requestWithdrawal valid/skipped: 17605 8111
+  CUMULATIVE cancelWithdrawal valid/skipped: 9958 15251
+  CUMULATIVE completeWithdrawal valid/skipped: 5463 19358
+  CUMULATIVE withdrawRemainder valid/skipped: 4125 21733
+  CUMULATIVE extendEnd valid/skipped: 25511 0
+  CUMULATIVE warp valid/skipped: 25091 0
+  CUMULATIVE toggleBlocklist valid/skipped: 24289 0
+  CUMULATIVE withdrawOwed valid/skipped: 2025 23017
+  CUMULATIVE valid / total handler calls: 223067 375552
+
+[PASS] invariant_I6_terminality() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 3 4
+  fileClaim 11 0
+  approve 9 3
+  object 7 11
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 77 51 0
+  CUMULATIVE create valid/skipped: 3985 12514
+  CUMULATIVE deposit valid/skipped: 11312 5583
+  CUMULATIVE fileClaim valid/skipped: 15121 2122
+  CUMULATIVE approve valid/skipped: 13156 3679
+  CUMULATIVE object valid/skipped: 6450 10712
+  CUMULATIVE cancel valid/skipped: 12936 3688
+  CUMULATIVE payOut valid/skipped: 11083 5794
+  CUMULATIVE requestWithdrawal valid/skipped: 12040 5484
+  CUMULATIVE cancelWithdrawal valid/skipped: 6772 10398
+  CUMULATIVE completeWithdrawal valid/skipped: 3764 13133
+  CUMULATIVE withdrawRemainder valid/skipped: 2804 14796
+  CUMULATIVE extendEnd valid/skipped: 17402 0
+  CUMULATIVE warp valid/skipped: 17076 0
+  CUMULATIVE toggleBlocklist valid/skipped: 16515 0
+  CUMULATIVE withdrawOwed valid/skipped: 1364 15631
+  CUMULATIVE valid / total handler calls: 151935 255488
+
+[PASS] invariant_I7_timeOrdering() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 7 11
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 79 49 0
+  CUMULATIVE create valid/skipped: 6150 19306
+  CUMULATIVE deposit valid/skipped: 17412 8784
+  CUMULATIVE fileClaim valid/skipped: 23409 3309
+  CUMULATIVE approve valid/skipped: 20357 5672
+  CUMULATIVE object valid/skipped: 9991 16524
+  CUMULATIVE cancel valid/skipped: 19990 5732
+  CUMULATIVE payOut valid/skipped: 17108 8919
+  CUMULATIVE requestWithdrawal valid/skipped: 18506 8510
+  CUMULATIVE cancelWithdrawal valid/skipped: 10473 16057
+  CUMULATIVE completeWithdrawal valid/skipped: 5721 20298
+  CUMULATIVE withdrawRemainder valid/skipped: 4340 22837
+  CUMULATIVE extendEnd valid/skipped: 26780 0
+  CUMULATIVE warp valid/skipped: 26266 0
+  CUMULATIVE toggleBlocklist valid/skipped: 25510 0
+  CUMULATIVE withdrawOwed valid/skipped: 2142 24178
+  CUMULATIVE valid / total handler calls: 234317 394496
+
+[PASS] invariant_I8_termsImmutable() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 7 0
+  fileClaim 11 0
+  approve 9 3
+  object 7 11
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 4 1
+  cancelWithdrawal 3 8
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 1 6
+  SUMMARY valid/skipped/reverted: 79 49 0
+  CUMULATIVE create valid/skipped: 6022 18873
+  CUMULATIVE deposit valid/skipped: 17033 8638
+  CUMULATIVE fileClaim valid/skipped: 22914 3227
+  CUMULATIVE approve valid/skipped: 19951 5554
+  CUMULATIVE object valid/skipped: 9788 16159
+  CUMULATIVE cancel valid/skipped: 19563 5593
+  CUMULATIVE payOut valid/skipped: 16746 8741
+  CUMULATIVE requestWithdrawal valid/skipped: 18121 8336
+  CUMULATIVE cancelWithdrawal valid/skipped: 10256 15704
+  CUMULATIVE completeWithdrawal valid/skipped: 5609 19901
+  CUMULATIVE withdrawRemainder valid/skipped: 4242 22368
+  CUMULATIVE extendEnd valid/skipped: 26251 0
+  CUMULATIVE warp valid/skipped: 25763 0
+  CUMULATIVE toggleBlocklist valid/skipped: 24968 0
+  CUMULATIVE withdrawOwed valid/skipped: 2093 23675
+  CUMULATIVE valid / total handler calls: 229482 386304
+
+[PASS] invariant_callSummary() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 3 4
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 0 7
+  SUMMARY valid/skipped/reverted: 77 51 0
+  CUMULATIVE create valid/skipped: 1555 4845
+  CUMULATIVE deposit valid/skipped: 4408 2205
+  CUMULATIVE fileClaim valid/skipped: 5839 839
+  CUMULATIVE approve valid/skipped: 5157 1454
+  CUMULATIVE object valid/skipped: 2477 4154
+  CUMULATIVE cancel valid/skipped: 5020 1432
+  CUMULATIVE payOut valid/skipped: 4299 2280
+  CUMULATIVE requestWithdrawal valid/skipped: 4666 2172
+  CUMULATIVE cancelWithdrawal valid/skipped: 2627 4037
+  CUMULATIVE completeWithdrawal valid/skipped: 1472 5164
+  CUMULATIVE withdrawRemainder valid/skipped: 1105 5746
+  CUMULATIVE extendEnd valid/skipped: 6823 0
+  CUMULATIVE warp valid/skipped: 6727 0
+  CUMULATIVE toggleBlocklist valid/skipped: 6447 0
+  CUMULATIVE withdrawOwed valid/skipped: 526 6113
+  CUMULATIVE valid / total handler calls: 59269 99712
+
+[PASS] invariant_ghostsMatchContract() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 5 2
+  fileClaim 11 0
+  approve 9 3
+  object 7 11
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 2 5
+  SUMMARY valid/skipped/reverted: 80 48 0
+  CUMULATIVE create valid/skipped: 3669 11497
+  CUMULATIVE deposit valid/skipped: 10445 5177
+  CUMULATIVE fileClaim valid/skipped: 13938 1943
+  CUMULATIVE approve valid/skipped: 12146 3354
+  CUMULATIVE object valid/skipped: 5944 9834
+  CUMULATIVE cancel valid/skipped: 11930 3384
+  CUMULATIVE payOut valid/skipped: 10211 5318
+  CUMULATIVE requestWithdrawal valid/skipped: 11080 5054
+  CUMULATIVE cancelWithdrawal valid/skipped: 6246 9585
+  CUMULATIVE completeWithdrawal valid/skipped: 3453 12086
+  CUMULATIVE withdrawRemainder valid/skipped: 2584 13629
+  CUMULATIVE extendEnd valid/skipped: 16002 0
+  CUMULATIVE warp valid/skipped: 15687 0
+  CUMULATIVE toggleBlocklist valid/skipped: 15219 0
+  CUMULATIVE withdrawOwed valid/skipped: 1258 14417
+  CUMULATIVE valid / total handler calls: 139967 235264
+
+[PASS] invariant_validCallsNeverRevert() (runs: 256, calls: 32768, reverts: 0)
+
+╭---------------+--------------------+-------+---------+----------╮
+| Contract      | Selector           | Calls | Reverts | Discards |
++=================================================================+
+| UnlessHandler | approve            | 2161  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancel             | 2144  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | cancelWithdrawal   | 2202  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | completeWithdrawal | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | create             | 2118  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | deposit            | 2178  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | extendEnd          | 2222  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | fileClaim          | 2218  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | object             | 2195  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | payOut             | 2167  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | requestWithdrawal  | 2247  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | toggleBlocklist    | 2117  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | warp               | 2185  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawOwed       | 2189  | 0       | 0        |
+|---------------+--------------------+-------+---------+----------|
+| UnlessHandler | withdrawRemainder  | 2258  | 0       | 0        |
+╰---------------+--------------------+-------+---------+----------╯
+
+Logs:
+  create 2 4
+  deposit 3 4
+  fileClaim 11 0
+  approve 9 3
+  object 8 10
+  cancel 2 1
+  payOut 3 1
+  requestWithdrawal 5 0
+  cancelWithdrawal 4 7
+  completeWithdrawal 1 4
+  withdrawRemainder 0 10
+  extendEnd 11 0
+  warp 7 0
+  toggleBlocklist 11 0
+  withdrawOwed 0 7
+  SUMMARY valid/skipped/reverted: 77 51 0
+  CUMULATIVE create valid/skipped: 4918 15414
+  CUMULATIVE deposit valid/skipped: 13928 6996
+  CUMULATIVE fileClaim valid/skipped: 18678 2635
+  CUMULATIVE approve valid/skipped: 16294 4546
+  CUMULATIVE object valid/skipped: 7965 13183
+  CUMULATIVE cancel valid/skipped: 15967 4544
+  CUMULATIVE payOut valid/skipped: 13688 7136
+  CUMULATIVE requestWithdrawal valid/skipped: 14826 6787
+  CUMULATIVE cancelWithdrawal valid/skipped: 8363 12823
+  CUMULATIVE completeWithdrawal valid/skipped: 4614 16230
+  CUMULATIVE withdrawRemainder valid/skipped: 3457 18270
+  CUMULATIVE extendEnd valid/skipped: 21438 0
+  CUMULATIVE warp valid/skipped: 21107 0
+  CUMULATIVE toggleBlocklist valid/skipped: 20402 0
+  CUMULATIVE withdrawOwed valid/skipped: 1696 19335
+  CUMULATIVE valid / total handler calls: 187529 315520
+
+[PASS] test_handler_everyActionSucceeds() (gas: 4034151)
+Suite result: ok. 13 passed; 0 failed; 0 skipped; finished in 90.05s (315.95s CPU time)
+
+Ran 2 tests for contracts/test/UnlessRetainer.WindowFuzz.t.sol:UnlessRetainerWindowFuzzTest
+[PASS] testFuzz_window_boundaries(uint32,uint32) (runs: 256, μ: 397650, ~: 403344)
+[PASS] testFuzz_window_exactEdges(uint32) (runs: 256, μ: 571202, ~: 570909)
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 90.14s (90.21s CPU time)
+
+Ran 22 test suites in 90.19s (180.54s CPU time): 380 tests passed, 0 failed, 0 skipped (380 total tests)
+TEST_EXIT=0

@@ -1,0 +1,39 @@
+# Secrets and wallet material. Never commit these.
+.env
+.env.*
+!.env.example
+.circle/
+recovery_file*
+*.pem
+*.key
+*.keystore
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+*.secret
+secrets/
+
+# Dependencies and build output
+node_modules/
+dist/
+out/
+cache/
+contracts/out/
+contracts/cache/
+broadcast/
+*.tsbuildinfo
+
+# Arc Studio runtime logs (network traces and browser console capture)
+traces.jsonl
+console.jsonl
+*.log
+
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/
+
+# Local review files for the push (not committed)
+evidence/staged-files.txt
+evidence/secret-scan.txt

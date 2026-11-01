@@ -1,0 +1,514 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens (docs/05-FRONTEND-SPEC 5.2). Light is the default, dark follows the system. */
+:root {
+  --paper: #f2f4f1;
+  --ink: #1d2420;
+  --carbon: #2f45a6;
+  --settled: #2d7a4e;
+  --objected: #b0322a;
+  --rule: #c9d0cb;
+  --muted: #5f6b64;
+  color-scheme: light dark;
+
+  /* Motion tokens (docs/05-FRONTEND-SPEC 5.5). Nothing in the UI runs longer than 300 ms. */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* enter, exit, press feedback */
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* movement that stays on screen */
+  --ease-hover: ease; /* colour and hover changes */
+  --ease-linear: linear; /* only the fuse burn-down */
+  --dur-press: 160ms; /* press feedback: 100-160 */
+  --dur-hover: 150ms;
+  --dur-popover: 150ms; /* tooltips and popovers: 125-200 */
+  --dur-dialog: 220ms; /* dialogs: 200-250 */
+  --dur-enter: 200ms;
+  --dur-exit: 120ms; /* exits are faster than enters */
+  --dur-stamp: 300ms; /* the 5.3 "Paid" stamp, with --ease-out */
+  --press-scale: 0.97;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #151a17;
+    --ink: #e6ebe7;
+    --carbon: #8fa2f2;
+    --settled: #6cc394;
+    --objected: #ee8a82;
+    --rule: #2c3530;
+    --muted: #9aa59e;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  /* Mobile basics (5.5): no grey flash on tap, no font inflation in landscape. */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--carbon);
+}
+
+/* Amounts and counters keep their digits aligned. */
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--carbon);
+  outline-offset: 2px;
+}
+
+/* iOS zooms the page when an input under 16px takes focus. Never disable zoom to fix that. */
+input,
+textarea,
+select {
+  font-size: max(16px, 1rem);
+}
+
+/* Controls are not content: no long-press text selection or callout. Body text stays selectable. */
+button,
+[role='button'],
+.btn,
+.pressable,
+.icon-btn {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+@layer components {
+  /* A panel is a ticket: square corners, one hairline, a perforated top edge. */
+  .panel {
+    position: relative;
+    border: 1px solid var(--rule);
+    background: transparent;
+  }
+
+  .perforated {
+    padding-top: 1.25rem;
+  }
+
+  .perforated::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: radial-gradient(circle at 6px 4px, var(--rule) 1.75px, transparent 2.25px);
+    background-size: 14px 8px;
+    background-repeat: repeat-x;
+  }
+
+  /* Safe areas: content keeps clear of the notch, rounded corners and home indicator (needs viewport-fit=cover). */
+  .shell-x {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  .shell-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .shell-bottom {
+    padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Press feedback on every pressable element: scale(0.97), 160 ms, --ease-out. Transform only. */
+  .btn,
+  .pressable {
+    transition: transform var(--dur-press) var(--ease-out);
+  }
+
+  .btn:active:not(:disabled):not([aria-disabled='true']),
+  .pressable:active:not(:disabled):not([aria-disabled='true']) {
+    transform: scale(var(--press-scale));
+  }
+
+  .btn {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--carbon);
+    border-radius: 2px;
+    padding: 0.5rem 1.1rem;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      background-color var(--dur-hover) var(--ease-hover),
+      color var(--dur-hover) var(--ease-hover),
+      opacity var(--dur-hover) var(--ease-hover);
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--carbon);
+    color: var(--paper);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--carbon);
+  }
+
+  /* A decision that cannot be undone. Same shape as the primary button, in the objection colour. */
+  .btn-danger {
+    border-color: var(--objected);
+    background: var(--objected);
+    color: var(--paper);
+  }
+
+  /* A pressable row (a whole panel that is a link). */
+  .pressable-row {
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-hover);
+  }
+
+  /* Small icon buttons keep a 44 px hit area while the icon stays 16 px. */
+  .icon-btn {
+    display: inline-flex;
+    height: 2.75rem;
+    width: 2.75rem;
+    margin-block: -0.75rem;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      color var(--dur-hover) var(--ease-hover);
+  }
+
+  .icon-btn:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .field {
+    min-height: 2.75rem;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: transparent;
+    padding: 0.5rem 0.75rem;
+    color: var(--ink);
+    font: inherit;
+    font-size: max(16px, 1rem);
+    transition: border-color var(--dur-hover) var(--ease-hover);
+  }
+
+  /* State change on entry: opacity only, interruptible, skipped where @starting-style is unsupported. */
+  .enter-fade {
+    opacity: 1;
+    transition: opacity var(--dur-enter) var(--ease-out);
+  }
+}
+
+@starting-style {
+  .enter-fade {
+    opacity: 0;
+  }
+}
+
+/* Hover only where there is a real hover: a fine pointer. Touch gets :active press feedback instead. */
+@layer components {
+  /* One option of a radio group, drawn as a square-cornered ticket stub. The input stays real and focusable. */
+  .choice {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 0;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    transition:
+      transform var(--dur-press) var(--ease-out),
+      border-color var(--dur-hover) var(--ease-hover),
+      background-color var(--dur-hover) var(--ease-hover);
+  }
+
+  .choice::before {
+    content: '';
+    flex-shrink: 0;
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid var(--muted);
+    transition:
+      background-color var(--dur-hover) var(--ease-hover),
+      border-color var(--dur-hover) var(--ease-hover);
+  }
+
+  .choice:has(input:checked) {
+    border-color: var(--carbon);
+    background: color-mix(in srgb, var(--carbon) 10%, transparent);
+  }
+
+  .choice:has(input:checked)::before {
+    border-color: var(--carbon);
+    background: var(--carbon);
+  }
+
+  .choice:has(input:focus-visible) {
+    outline: 2px solid var(--carbon);
+    outline-offset: 2px;
+  }
+
+  .choice:active {
+    transform: scale(var(--press-scale));
+  }
+
+  .choice input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+/* Keeps dialogs and the page they sit on in separate stacking contexts (base-ui recommends this on iOS). */
+#root {
+  isolation: isolate;
+}
+
+@layer components {
+  /* The fuse (05-FRONTEND-SPEC 5.3): a 2 px line that burns down to payout. Moves with transform only. */
+  .fuse {
+    position: relative;
+    height: 2px;
+    width: 100%;
+    background: var(--rule);
+  }
+
+  .fuse-bar {
+    position: absolute;
+    inset: 0;
+    transform-origin: left center;
+    background: var(--carbon);
+    /* The one linear motion in the UI: a burn-down is constant by nature. One step per second, glided. */
+    transition: transform 1000ms linear;
+  }
+
+  /* Its own compositor layer only while it is moving; settled bars stay flat. */
+  .fuse[data-state='open'] .fuse-bar {
+    will-change: transform;
+  }
+
+  .fuse[data-state='payable'] .fuse-bar,
+  .fuse[data-state='paid'] .fuse-bar {
+    background: var(--settled);
+    transition: none;
+  }
+
+  .fuse[data-state='ended'] .fuse-bar {
+    background: transparent;
+    transition: none;
+  }
+
+  /* A confirmed payout: the bar fills and turns settled in 300 ms. */
+  .fuse[data-fill='true'] .fuse-bar {
+    transition:
+      transform var(--dur-stamp) var(--ease-out),
+      background-color var(--dur-stamp) var(--ease-out);
+  }
+
+  /* The punched timestamp mark: a small hole where the fuse ended. */
+  .punch {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.45rem;
+    border: 1px solid var(--settled);
+    vertical-align: baseline;
+  }
+
+  .stamp {
+    display: inline-block;
+    border: 1px solid var(--settled);
+    padding: 0.1rem 0.65rem;
+    color: var(--settled);
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    font-weight: 700;
+    transition:
+      opacity var(--dur-stamp) var(--ease-out),
+      transform var(--dur-stamp) var(--ease-out);
+  }
+
+  .field-area {
+    min-height: 6rem;
+    resize: vertical;
+    line-height: 1.4;
+  }
+
+  /* Confirmation dialogs (base-ui, unstyled). Square corners, one hairline, no shadow, no blur. */
+  .dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--ink) 45%, transparent);
+    opacity: 1;
+    transition: opacity var(--dur-dialog) var(--ease-out);
+  }
+
+  .dialog-viewport {
+    position: fixed;
+    inset: 0;
+    z-index: 51;
+    display: grid;
+    place-items: center;
+    overflow-y: auto;
+    padding:
+      max(1rem, env(safe-area-inset-top))
+      max(1rem, env(safe-area-inset-right))
+      max(1rem, env(safe-area-inset-bottom))
+      max(1rem, env(safe-area-inset-left));
+  }
+
+  .dialog-popup {
+    width: min(100%, 30rem);
+    max-height: 100%;
+    overflow-y: auto;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 1.5rem;
+    opacity: 1;
+    transform: scale(1);
+    transform-origin: center;
+    transition:
+      opacity var(--dur-dialog) var(--ease-out),
+      transform var(--dur-dialog) var(--ease-out);
+  }
+
+  /* Entering and leaving: never from nothing (scale 0.95 + opacity), and the exit is faster than the enter. */
+  .dialog-backdrop[data-starting-style],
+  .dialog-backdrop[data-ending-style] {
+    opacity: 0;
+  }
+
+  .dialog-popup[data-starting-style],
+  .dialog-popup[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  .dialog-backdrop[data-ending-style],
+  .dialog-popup[data-ending-style] {
+    transition-duration: var(--dur-exit);
+  }
+}
+
+/* A confirmed payout stamps the row; a row that was already paid when you arrived is simply there. */
+@starting-style {
+  .stamp[data-enter='true'] {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover:not(:disabled),
+  .btn-danger:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+
+  .btn-quiet:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--carbon) 10%, transparent);
+  }
+
+  .choice:hover:not(:has(input:checked)) {
+    border-color: var(--muted);
+  }
+
+  .pressable-row:hover {
+    border-color: var(--muted);
+  }
+
+  .icon-btn:hover {
+    color: var(--ink);
+  }
+
+  .field:hover {
+    border-color: var(--muted);
+  }
+}
+
+/* Spec 5.3 wins over 5.5: state changes are instant and nothing moves. Press feedback stays, as a colour change. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn:active:not(:disabled):not([aria-disabled='true']),
+  .pressable:active:not(:disabled):not([aria-disabled='true']),
+  .choice:active,
+  .icon-btn:active {
+    transform: none;
+  }
+
+  .btn-primary:active:not(:disabled),
+  .btn-danger:active:not(:disabled) {
+    opacity: 0.76;
+  }
+
+  .btn-quiet:active:not(:disabled) {
+    background: color-mix(in srgb, var(--carbon) 18%, transparent);
+  }
+
+  .pressable-row:active,
+  .choice:active:not(:has(input:checked)) {
+    border-color: var(--muted);
+  }
+
+  .icon-btn:active {
+    color: var(--ink);
+  }
+}
